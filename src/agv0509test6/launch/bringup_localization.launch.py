@@ -30,7 +30,7 @@ def generate_launch_description():
 
     default_ekf  = os.path.join(pkg_share, 'config', 'ekf.yaml')
     default_amcl = os.path.join(pkg_share, 'config', 'amcl.yaml')
-    default_map  = '/home/hcmute/AMR/mobile_robot_amr/maps/maze_31.yaml'
+    default_map  = '/home/hcmute/AMR/mobile_robot_amr/maps/my_map.yaml'
     scan_filter_params = os.path.join(pkg_share, 'config', 'scan_filter.yaml')
 
     # =========================
@@ -120,6 +120,7 @@ def generate_launch_description():
     rsp_and_ekf_delayed = TimerAction(
         period=8.0,
         actions=[robot_state_pub, ekf_odom]
+        
     )
 
     # =========================

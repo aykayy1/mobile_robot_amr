@@ -35,7 +35,7 @@ class WheelVelNode(Node):
         self.declare_parameter('wheel_radius', 0.1)         # [m]
         self.declare_parameter('wheel_separation', 0.636)   # [m]
         self.declare_parameter('gear_ratio', 10.0)           # nếu rpm là rpm bánh thì = 1.0
-        self.declare_parameter('base_rpm', 250.0)
+        self.declare_parameter('base_rpm', 350.0)
         self.declare_parameter('base_rpm_rota', 40.0)               # rpm cơ bản khi nhấn phím
 
         port = self.get_parameter('port').get_parameter_value().string_value
