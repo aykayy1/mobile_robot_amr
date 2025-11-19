@@ -1,0 +1,248 @@
+<sdf version="1.6">
+  <model name="agv0509test6">
+    <static>false</static>
+    <pose>0 0 0 0 0 0</pose>
+
+    <!-- Base_footprint -->
+    <link name="Base_footprint">
+      <inertial>
+        <origin xyz="0.0050723 -0.00081998 0.13138" rpy="0 0 0" />
+        <mass value="9.8448" />
+        <inertia ixx="0.51144" ixy="4.6267E-05" ixz="0.001146" iyy="0.6181" iyz="3.4331E-05" izz="1.0517" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Base_footprint.stl" />
+        </geometry>
+        <material>
+          <color rgba="0.75294 0.75294 0.75294 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Base_footprint.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Base_Link -->
+    <link name="Base_Link">
+      <inertial>
+        <origin xyz="-6.1479E-05 -0.014856 0.039725" rpy="0 0 0" />
+        <mass value="10.228" />
+        <inertia ixx="0.51173" ixy="4.6267E-05" ixz="0.001146" iyy="0.61846" iyz="3.4331E-05" izz="1.0521" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Base_Link.stl" />
+        </geometry>
+        <material>
+          <color rgba="0.75294 0.75294 0.75294 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Base_Link.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Right_Wheel -->
+    <link name="Right_Wheel">
+      <inertial>
+        <origin xyz="-5.5511E-17 -0.019997 -1.1102E-16" rpy="0 0 0" />
+        <mass value="0.8908" />
+        <inertia ixx="0.0029235" ixy="4.9337E-19" ixz="-6.3874E-20" iyy="0.0056311" iyz="2.1347E-18" izz="0.0029235" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Right_Wheel.stl" />
+        </geometry>
+        <material>
+          <color rgba="1 0 0 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Right_Wheel.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Left_Wheel -->
+    <link name="Left_Wheel">
+      <inertial>
+        <origin xyz="0 0.019997 -1.1102E-16" rpy="0 0 0" />
+        <mass value="0.8908" />
+        <inertia ixx="0.0029235" ixy="-2.6974E-18" ixz="7.6101E-20" iyy="0.0056311" iyz="-8.9984E-18" izz="0.0029235" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Left_Wheel.stl" />
+        </geometry>
+        <material>
+          <color rgba="1 0 0 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Left_Wheel.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Lidar -->
+    <link name="Lidar">
+      <inertial>
+        <origin xyz="-0.00056511 -1.4968E-05 0.019299" rpy="0 0 0" />
+        <mass value="0.16538" />
+        <inertia ixx="7.8866E-05" ixy="4.8738E-08" ixz="2.1848E-06" iyy="7.519E-05" iyz="2.8958E-08" izz="0.00010995" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Lidar.stl" />
+        </geometry>
+        <material>
+          <color rgba="0.75294 0.75294 0.75294 0.4" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Lidar.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Mam_xoay -->
+    <link name="Mam_xoay">
+      <inertial>
+        <origin xyz="-0.00031092 -0.00080851 -0.022422" rpy="0 0 0" />
+        <mass value="3.4989" />
+        <inertia ixx="0.063931" ixy="-1.6423E-07" ixz="1.0885E-06" iyy="0.06393" iyz="2.8306E-06" izz="0.12544" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Mam_xoay.stl" />
+        </geometry>
+        <material>
+          <color rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://agv0509test6/meshes/Mam_xoay.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Joint definitions -->
+    <joint name="Base_Link_jt" type="fixed">
+      <origin xyz="0.0175 0.014007 0.0925" rpy="0 0 0" />
+      <parent link="Base_footprint" />
+      <child link="Base_Link" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+    <joint name="Right_Wheel_jt" type="continuous">
+      <origin xyz="-0.0055011 -0.30701 0.0075" rpy="0 0 0" />
+      <parent link="Base_Link" />
+      <child link="Right_Wheel" />
+      <axis xyz="0 1 0" />
+      <limit effort="3" velocity="8" />
+      <dynamics friction="0.2" />
+    </joint>
+
+    <joint name="Left_Wheel_jt" type="continuous">
+      <origin xyz="-0.0055001 0.27899 0.0075" rpy="0 0 0" />
+      <parent link="Base_Link" />
+      <child link="Left_Wheel" />
+      <axis xyz="0 1 0" />
+      <limit effort="3" velocity="8" />
+      <dynamics friction="0.2" />
+    </joint>
+
+    <joint name="Lidar_jt" type="fixed">
+      <origin xyz="0.3305 -0.015607 0.094" rpy="0 0 0" />
+      <parent link="Base_Link" />
+      <child link="Lidar" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+    <joint name="Mam_xoay_jt" type="fixed">
+      <origin xyz="-0.017238 -0.013326 0.27615" rpy="0 0 0" />
+      <parent link="Base_Link" />
+      <child link="Mam_xoay" />
+      <axis xyz="0 0 1" />
+      <limit lower="0" upper="360" effort="0" velocity="0" />
+    </joint>
+
+    <!-- Sensor and Plugin -->
+    <gazebo reference="Lidar">
+      <sensor type="gpu_lidar" name="gpu_lidar">
+        <update_rate>10</update_rate>
+        <always_on>true</always_on>
+        <visualize>1</visualize>
+        <topic>scan</topic>
+        <ignition_frame_id>Lidar</ignition_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.05</min>
+            <max>12.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.001</stddev>
+          </noise>
+        </lidar>
+        <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+          <render_engine>ogre2</render_engine>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <!-- DiffDrive Plugin -->
+    <gazebo>
+      <plugin filename="ignition-gazebo-diff-drive-system" name="ignition::gazebo::systems::DiffDrive">
+        <left_joint>Left_Wheel_jt</left_joint>
+        <right_joint>Right_Wheel_jt</right_joint>
+        <wheel_separation>0.636</wheel_separation>
+        <wheel_radius>0.1</wheel_radius>
+        <topic>cmd_vel</topic>
+        <max_linear_acceleration>5.0</max_linear_acceleration>
+        <max_angular_acceleration>5.0</max_angular_acceleration>
+        <odometry_publisher>true</odometry_publisher>
+        <publish_tf>false</publish_tf>
+        <odom_topic>odom</odom_topic>
+        <odom_frame>odom</odom_frame>
+        <odom_publish_frequency>30</odom_publish_frequency>
+        <publish_tf>false</publish_tf>
+        <frame_id>odom</frame_id>
+        <child_frame_id>Base_footprint</child_frame_id>
+        <robot_base_frame>Base_footprint</robot_base_frame>
+      </plugin>
+    </gazebo>
+  </model>
+</sdf>
+

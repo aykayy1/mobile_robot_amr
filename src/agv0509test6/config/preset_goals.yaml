@@ -1,0 +1,77 @@
+C205A1:
+  frame_id: "map"
+  position:
+    x: -1.96
+    y: 6.79
+    z: 0.0
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: 1.0
+    w: 0.0
+
+C205A2:
+  frame_id: "map"
+  position:
+    x: 20.85
+    y: 0.02
+    z: 0.0
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+
+C20A3:
+  frame_id: "map"
+  position:
+    x: 21.48
+    y: 13.55
+    z: 0.0
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: 1.0
+    w: 0.0
+
+
+C20A4:
+  frame_id: "map"
+  position:
+    x: 62.00
+    y: 13.12
+    z: 0.0
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: 1.0
+    w: 0.0
+
+
+GOAL1:
+  sequence:
+    - point: C205A1
+      wait_sec: 10
+    - point: C205A2
+      wait_sec: 10
+    - point: C20A3
+      wait_sec: 10
+
+GOAL2:
+  sequence:
+    - point: C20A4
+      wait_sec: 10
+    - point: C205A1
+      wait_sec: 10
+    - point: C20A3
+      wait_sec: 10
+
+GOAL3:
+  sequence:
+    - point: C205A2
+      wait_sec: 10
+    - point: C20A3
+      wait_sec: 10
+    - point: C20A4
+      wait_sec: 10
+
