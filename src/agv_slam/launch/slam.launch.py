@@ -5,6 +5,7 @@ import os
 
 def generate_launch_description():
 
+    # Lấy đường dẫn file params
     params_file = os.path.join(
         get_package_share_directory('agv_slam'),
         'config',
@@ -13,12 +14,21 @@ def generate_launch_description():
 
     slam_node = Node(
         package='slam_toolbox',
-        executable='sync_slam_toolbox_node',   # Dùng chế độ sync cho robot thực
+        executable='sync_slam_toolbox_node',   # Robot thật dùng SYNC node
         name='slam_toolbox',
         output='screen',
-        parameters=[params_file],
+        parameters=[
+            params_file,
+            {
+                'use_sim_time': False,        # Robot thật = FALSE
+                'odom_frame': 'odom',
+                'base_frame': 'base_footprint',
+                'map_frame': 'map',
+                'scan_topic': '/scan'         # Nhớ chỉnh đúng topic lidar thật
+            }
+        ],
         remappings=[
-            ('/scan', '/scan')     # nếu lidar là /scan
+            ('/scan', '/scan')  # Nếu lidar là /scan, giữ nguyên
         ]
     )
 
