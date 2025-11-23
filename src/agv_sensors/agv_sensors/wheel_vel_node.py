@@ -133,7 +133,7 @@ class WheelVelNode(Node):
         # Đóng gói vào TwistWithCovarianceStamped
         msg = TwistWithCovarianceStamped()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = 'base_link'   # hoặc base_footprint tùy bạn cấu hình RL
+        msg.header.frame_id = 'Base_footprint'   # hoặc base_footprint tùy bạn cấu hình RL
 
         msg.twist.twist.linear.x = v     # m/s
         msg.twist.twist.linear.y = 0.0

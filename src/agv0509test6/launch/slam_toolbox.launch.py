@@ -15,16 +15,6 @@ def generate_launch_description():
     # Duong dan den file slam
     slam_params_file = '/home/anhkhoa/Mobile_robot/agv_ws/src/agv0509test6/config/slam_toolbox_params.yaml'
 
-    # === Laser Scan Filter ===
-    scan_filter_params = os.path.join(pkg_share, 'config', 'scan_filter.yaml')
-    scan_filter = Node(
-        package='laser_filters',
-        executable='scan_to_scan_filter_chain',
-        name='front_scan_filter',
-        output='screen',
-        parameters=[scan_filter_params, {'use_sim_time': True}],
-        remappings=[('/scan', '/scan'), ('/scan_filtered', '/scan_filtered')]
-    )
 
     
     # Goi launch cua slam_toolbox

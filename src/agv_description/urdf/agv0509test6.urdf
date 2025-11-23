@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Base_footprint.stl" />
+          filename="package://agv0509test6/meshes/Base_footprint.stl" />
       </geometry>
       <material
         name="">
@@ -40,7 +40,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Base_footprint.stl" />
+          filename="package://agv0509test6/meshes/Base_footprint.stl" />
       </geometry>
     </collision>
   </link>
@@ -66,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Base_Link.stl" />
+          filename="package://agv0509test6/meshes/Base_Link.stl" />
       </geometry>
       <material
         name="">
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Base_Link.stl" />
+          filename="package://agv0509test6/meshes/Base_Link.stl" />
       </geometry>
     </collision>
   </link>
@@ -119,7 +119,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Right_Wheel.stl" />
+          filename="package://agv0509test6/meshes/Right_Wheel.stl" />
       </geometry>
       <material
         name="">
@@ -133,13 +133,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Right_Wheel.stl" />
+          filename="package://agv0509test6/meshes/Right_Wheel.stl" />
       </geometry>
     </collision>
   </link>
   <joint
     name="Right_Wheel_jt"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="-0.0055011 -0.30701 0.0075"
       rpy="0 0 0" />
@@ -177,7 +177,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Left_Wheel.stl" />
+          filename="package://agv0509test6/meshes/Left_Wheel.stl" />
       </geometry>
       <material
         name="">
@@ -191,13 +191,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Left_Wheel.stl" />
+          filename="package://agv0509test6/meshes/Left_Wheel.stl" />
       </geometry>
     </collision>
   </link>
   <joint
     name="Left_Wheel_jt"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="-0.0055001 0.27899 0.0075"
       rpy="0 0 0" />
@@ -235,7 +235,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Lidar.stl" />
+          filename="package://agv0509test6/meshes/Lidar.stl" />
       </geometry>
       <material
         name="">
@@ -249,11 +249,9 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Lidar.stl" />
+          filename="package://agv0509test6/meshes/Lidar.stl" />
       </geometry>
     </collision>
-
-
 
   </link>
   <joint
@@ -291,7 +289,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Mam_xoay.stl" />
+          filename="package://agv0509test6/meshes/Mam_xoay.stl" />
       </geometry>
       <material
         name="">
@@ -305,7 +303,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://agv_description/meshes/Mam_xoay.stl" />
+          filename="package://agv0509test6/meshes/Mam_xoay.stl" />
       </geometry>
     </collision>
   </link>
@@ -328,66 +326,29 @@
       velocity="0" />
   </joint>
 
-      <!-- Sensor khai báo trực tiếp trong link -->
+  <!-- IMU link (cho robot thực tế) -->
+  <link name="imu_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0.0" ixz="0.0" iyy="1e-5" iyz="0.0" izz="1e-5"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+  </link>
 
-  <gazebo reference="Lidar">    
-    <sensor type="gpu_lidar" name="gpu_lidar">
-      <update_rate>10</update_rate>
-      <always_on>true</always_on>
-      <visualize>1</visualize>
-      <topic>scan</topic>
-      <ignition_frame_id>Lidar</ignition_frame_id>
-      <lidar>
-        <scan>
-          <horizontal>
-            <samples>720</samples>
-            <resolution>1</resolution>
-            <min_angle>-3.14159</min_angle>
-            <max_angle>3.14159</max_angle>
-          </horizontal>
-        </scan>
-        <range>
-          <min>0.05</min>
-          <max>12.0</max>
-          <resolution>0.01</resolution>
-        </range>
+  <!-- IMU joint: gắn trên Base_Link tại (0, 0, 0.05) -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="Base_Link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
 
-        <noise>
-          <type>gaussian</type>
-          <mean>0.0</mean>
-          <stddev>0.001</stddev>
-        </noise>
-
-      </lidar>
-      
-      <plugin filename="libignition-gazebo-sensors-system.so"
-            name="ignition::gazebo::systems::Sensors">
-        <render_engine>ogre2</render_engine>
-      </plugin>
-
-    </sensor>
-  </gazebo>  
-  <!-- DiffDrive: nhận /cmd_vel, điều khiển 2 bánh -->
-  <gazebo>
-    <plugin filename="ignition-gazebo-diff-drive-system"
-            name="ignition::gazebo::systems::DiffDrive">
-      <left_joint>Left_Wheel_jt</left_joint>
-      <right_joint>Right_Wheel_jt</right_joint>
-      <wheel_separation>0.586</wheel_separation>
-      <wheel_radius>0.1</wheel_radius>
-      <topic>cmd_vel</topic>
-      <max_linear_acceleration>5.0</max_linear_acceleration>
-      <max_angular_acceleration>5.0</max_angular_acceleration>
-      <odometry_publisher>true</odometry_publisher>
-      <publish_tf>false</publish_tf>
-      <odom_topic>odom</odom_topic>
-      <odom_frame>odom</odom_frame>
-      <odom_publish_frequency>30</odom_publish_frequency>
-      <publish_tf>false</publish_tf>
-      <frame_id>odom</frame_id>
-      <child_frame_id>Base_footprint</child_frame_id>
-
-      <robot_base_frame>Base_footprint</robot_base_frame>
-    </plugin>
-  </gazebo>
 </robot>

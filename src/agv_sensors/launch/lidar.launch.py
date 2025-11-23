@@ -27,7 +27,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(rplidar_launch_file),
         launch_arguments={
             'serial_port': LaunchConfiguration('lidar_port'),
-            'frame_id': 'laser',
+            'frame_id': 'Lidar',
             'inverted': 'false',
             'angle_compensate': 'true',
         }.items()

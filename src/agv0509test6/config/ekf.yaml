@@ -1,0 +1,51 @@
+ekf_odom_node:
+  ros__parameters:
+    frequency: 50.0
+    sensor_timeout: 0.1
+
+    two_d_mode: true
+    publish_tf: true
+    publish_acceleration: false
+
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: Base_footprint
+    world_frame: odom
+
+    # ========== WHEEL VELOCITY (JETSON) ==========
+    twist0: /wheel_vel
+
+    # [x, y, z,
+    #  roll, pitch, yaw,
+    #  vx, vy, vz,
+    #  vroll, vpitch, vyaw,
+    #  ax, ay, az]
+    twist0_config: [
+      false, false, false,
+      false, false, false,
+      true,  false, false,
+      false, false, true,
+      false, false, false
+    ]
+
+    twist0_differential: false
+    twist0_relative:     false
+    twist0_nodelay:      false
+    twist0_queue_size:   10
+
+    # ========== IMU ==========
+    imu0: /imu
+
+    imu0_config: [
+      false, false, false,   # x, y, z (IMU không cho position)
+      true,  true,  true,    # roll, pitch, yaw
+      false, false, false,   # vx, vy, vz
+      false, false, true,    # vroll, vpitch, vyaw (chỉ dùng yaw rate)
+      false, false, false    # ax, ay, az (tạm chưa fuse accel)
+    ]
+
+    imu0_differential: false
+    imu0_relative:     false
+    imu0_nodelay:      false
+    imu0_queue_size:   10
+    imu0_remove_gravitational_acceleration: true

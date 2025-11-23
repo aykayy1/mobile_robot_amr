@@ -9,34 +9,33 @@ slam_toolbox:
     ceres_dogleg_type: TRADITIONAL_DOGLEG
     ceres_loss_function: None
 
-    # ROS Parameters
+    # ROS Frames & topics (ĐANG ĐÚNG với hệ của em)
     odom_frame: odom
     map_frame: map
-    base_frame: Base_footprint
-    scan_topic: /scan_filtered
-    odom_topic: /odom
-    use_map_saver: true
-    queue_size: 200
-    mode: mapping #localization
+    base_frame: Base_footprint       # khớp URDF + EKF ✅
+    scan_topic: /scan                # khớp Lidar driver ✅
+    odom_topic: /odom                # khớp remap EKF ✅
 
-    # if you'd like to immediately start continuing a map at a given pose
-    # or at the dock, but they are mutually exclusive, if pose is given
-    # will use pose
-    #map_file_name: test_steve
-    # map_start_pose: [0.0, 0.0, 0.0]
-    #map_start_at_dock: true
+    use_map_saver: true
+    queue_size: 200                  # tạm giữ, queue full là do TF, không do số này
+    mode: mapping                    # dùng SLAM online (vẽ map)
 
     debug_logging: false
     throttle_scans: 1
-    transform_publish_period: 0.02 #if 0 never publishes odometry
+    transform_publish_period: 0.02   # slam publish TF map->odom mỗi 20ms
     map_update_interval: 5.0
     resolution: 0.05
-    min_laser_range: 0.1 #for rastering images
-    max_laser_range: 12.0 #for rastering images
-    minimum_time_interval: 0.5
-    transform_timeout: 0.2
-    tf_buffer_duration: 30.
-    stack_size_to_use: 40000000 #// program needs a larger stack size to serialize large maps
+
+    # ⚠️ SỬA: min_laser_range phải >= range_min của Lidar (log báo 0.2)
+    min_laser_range: 0.2             # <<< từ 0.1 -> 0.2 cho đúng cảnh báo
+    max_laser_range: 12.0
+
+    # Nếu scan gửi hơi nhanh / TF hơi chậm, nên relaxed các timeout này chút:
+    minimum_time_interval: 0.0       # <<< cho phép dùng mọi scan
+    transform_timeout: 0.5           # <<< cho slam chờ TF lâu hơn xíu
+    tf_buffer_duration: 30.0
+
+    stack_size_to_use: 40000000
     enable_interactive_mode: true
 
     # General Parameters
