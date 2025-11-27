@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-import sys
-import termios
-import tty
-import threading
-import math
-import time
-
-import serial
 import rclpy
 from rclpy.node import Node
 
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import TwistWithCovarianceStamped
+
+import serial
+import threading
+import math
+import sys
+import termios
+import tty
+import time
 
 
 def getch():
@@ -48,14 +48,7 @@ class WheelVelNode(Node):
         # ===== MỞ SERIAL =====
         self.get_logger().info(f"Opening serial {port} @ {baud}...")
         try:
-            self.ser = serial.Serial(
-                port,
-                baudrate=baud,
-                bytesize=serial.EIGHTBITS,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                timeout=0.05,
-            )
+            self.ser = serial.Serial(port, baudrate=baud, timeout=0.05)
         except Exception as e:
             self.get_logger().error(f"Cannot open serial: {e}")
             raise
@@ -75,7 +68,7 @@ class WheelVelNode(Node):
             10
         )
 
-        # ===== BIẾN LƯU RPM BÁNH =====
+        # Shared variables
         self._lock = threading.Lock()
         self._last_left_rpm = 0.0
         self._last_right_rpm = 0.0
@@ -102,21 +95,24 @@ class WheelVelNode(Node):
         self.timer_period = 0.02
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
 
+        self.get_logger().info("wheel_vel_node started.")
+
     # ======================================================
     #  SERIAL → đọc rpm từ STM32
     # ======================================================
     def serial_read_thread(self):
         while self._running and rclpy.ok():
             try:
-                line = self.ser.readline().decode('ascii', errors='ignore').strip()
+                line = self.ser.readline().decode(errors='ignore').strip()
                 if not line:
                     continue
 
-                if not line.startswith("VEL"):  # ví dụ: "VEL,12,-13"
+                if not line.startswith("VEL"):
                     continue
 
                 parts = line.split(',')
                 if len(parts) < 3:
+                    self.get_logger().warn(f"Bad line: {line}")
                     continue
 
                 left_rpm = float(parts[1])
@@ -126,8 +122,8 @@ class WheelVelNode(Node):
                     self._last_left_rpm = left_rpm
                     self._last_right_rpm = right_rpm
 
-            except Exception:
-                continue
+            except Exception as e:
+                self.get_logger().warn(f"Serial read error: {e}")
 
     # ======================================================
     #  BÀN PHÍM → điều khiển thủ công
@@ -183,8 +179,8 @@ class WheelVelNode(Node):
     # ======================================================
     def cmd_vel_callback(self, msg: Twist):
 
-        v = msg.linear.x          # m/s
-        w = msg.angular.z         # rad/s
+        v = msg.linear.x
+        w = msg.angular.z
 
         # differential drive
         v_r = v + (self.wheel_separation * w) / 2.0
@@ -194,7 +190,6 @@ class WheelVelNode(Node):
         rpm_r = (v_r / (2.0 * math.pi * self.wheel_radius)) * 60.0
         rpm_l = (v_l / (2.0 * math.pi * self.wheel_radius)) * 60.0
 
-        # gửi xuống STM32
         try:
             cmd = f"{int(rpm_l)},{int(rpm_r)}\r\n"
             self.ser.write(cmd.encode("ascii"))
@@ -224,25 +219,26 @@ class WheelVelNode(Node):
 
         self.pub.publish(msg)
 
+    def destroy_node(self):
+        self._running = False
+        try:
+            if self.ser.is_open:
+                self.ser.close()
+        except Exception:
+            pass
+        super().destroy_node()
+
 
 def main(args=None):
     rclpy.init(args=args)
     node = WheelVelNode()
-
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
-    finally:
-        node._running = False
-        time.sleep(0.1)
-        try:
-            node.ser.close()
-        except Exception:
-            pass
-        node.destroy_node()
-        rclpy.shutdown()
+    node.destroy_node()
+    rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
