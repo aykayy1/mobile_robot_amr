@@ -6,7 +6,7 @@ import os
 def generate_launch_description():
 
     joy_params = os.path.join(
-        get_package_share_directory('articubot_one'),
+        get_package_share_directory('agv_slam'),
         'config',
         'joystick.yaml'
     )
@@ -15,7 +15,11 @@ def generate_launch_description():
         package='joy',
         executable='joy_node',
         name='joy_node',
-        parameters=[joy_params]
+        parameters=[
+            joy_params,
+            {"dev": "/dev/input/js0"}
+        ],
+        output='screen'
     )
 
     teleop_node = Node(
@@ -24,8 +28,9 @@ def generate_launch_description():
         name='teleop_node',
         parameters=[joy_params],
         remappings=[
-            ('/cmd_vel', '/diff_cont/cmd_vel_unstamped')
-        ]
+            ('/cmd_vel', '/cmd_vel')   # xuất đúng topic
+        ],
+        output='screen'
     )
 
     return LaunchDescription([

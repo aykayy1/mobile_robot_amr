@@ -31,7 +31,7 @@ class WheelVelNode(Node):
         super().__init__('wheel_vel_node')
 
         # ===== ROS2 PARAMETERS =====
-        self.declare_parameter('port', '/dev/ttyACM0')
+        self.declare_parameter('port', '/dev/ttyACM1')
         self.declare_parameter('baud', 38400)
         self.declare_parameter('wheel_radius', 0.1)
         self.declare_parameter('wheel_separation', 0.636)
@@ -115,9 +115,12 @@ class WheelVelNode(Node):
                     self.get_logger().warn(f"Bad line: {line}")
                     continue
 
-                left_rpm = float(parts[1])
-                right_rpm = float(parts[2])
-
+                try:
+                    left_rpm = float(parts[1])
+                    right_rpm = float(parts[2])
+                except ValueError:
+                    self.get_logger().warn(f"Bad RPM packet: {line}")
+                    continue
                 with self._lock:
                     self._last_left_rpm = left_rpm
                     self._last_right_rpm = right_rpm
