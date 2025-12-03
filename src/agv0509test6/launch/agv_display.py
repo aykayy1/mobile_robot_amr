@@ -68,5 +68,5 @@ def generate_launch_description():
         rviz_arg,
         robot_state_pub,
         ekf_odom,
-        rviz,
+        #rviz,
     ])

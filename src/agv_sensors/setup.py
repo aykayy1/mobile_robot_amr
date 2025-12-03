@@ -37,6 +37,10 @@ setup(
             # Node đọc wheel velocity / odom
             'wheel_vel_node = agv_sensors.wheel_vel_node:main',
 
+            'cmd_vel_to_uart = agv_sensors.cmd_vel_to_uart:main',
+            
+            'wheel_vel_from_stm32 = agv_sensors.wheel_vel_from_stm32:main',
+
             # Nếu SAU NÀY em có file agv_sensors/lidar_node.py thì bật lại dòng này
             # 'lidar_node = agv_sensors.lidar_node:main',
         ],
