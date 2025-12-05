@@ -22,43 +22,47 @@ class CmdVelToUARTNode(Node):
         self.wheel_base   = 0.636  # m
 
         # Giới hạn rpm bánh
-        # - Chạy thẳng: 95 rpm
-        # - Quay tại chỗ: 20 rpm
         self.max_rpm_linear  = 95.0
         self.max_rpm_angular = 20.0
 
-        # v_max (m/s) tương ứng với 95 rpm
+        # Tính max linear (m/s)
         self.max_linear = 2.0 * math.pi * self.wheel_radius * self.max_rpm_linear / 60.0
 
-        # Tính max_angular sao cho:
-        # v = 0, w = max_angular  => rpm_left = -20, rpm_right = +20
-        # Công thức:
-        #   v_left  = -w * L / 2
-        #   v_right =  w * L / 2
-        #   rpm = v * factor,  factor = 60 / (2πR)
-        #   => max_angular = (max_rpm_angular / factor) * 2 / L
+        # Tính max angular (rad/s)
         factor = 60.0 / (2.0 * math.pi * self.wheel_radius)
         self.max_angular = (self.max_rpm_angular / factor) * 2.0 / self.wheel_base
 
-        # Giới hạn tần số gửi
-        self.min_send_period = 0.1  # s
-        self.last_send_time = self.get_clock().now()
+        # ============ Tối ưu dữ liệu joystick ============
+        # Smoothing (lọc nhiễu joystick)
+        self.smooth_gain = 0.2      # 0.1–0.3 mượt, 0.5 nhanh hơn
+
+        # Deadband từ joystick
+        self.linear_deadband = 0.02
+        self.angular_deadband_js = 0.02
+
+        # Deadband quay
+        self.angular_deadband = 0.25  # rad/s
+
+        # Deadband rpm
+        self.rpm_deadband = 1.0
+
+        # Giảm tần số gửi xuống STM32
+        self.timer_period = 0.1  # 10 Hz
+
+        # Bộ nhớ cmd_vel sau khi smoothing
+        self.cmd_v = 0.0
+        self.cmd_w = 0.0
 
         self.last_rpm_left = 0
         self.last_rpm_right = 0
 
-        # Đảo chiều: bánh TRÁI âm khi đi tới
+        # Đảo chiều bánh
         self.invert_left = True
         self.invert_right = False
 
-        # ===== GAIN HAI BÁNH =====
-        # Bánh trái đang nhanh hơn -> giảm gain
-        self.left_gain  = 0.9   # nếu vẫn nhanh, giảm xuống 0.5 / 0.4
+        # Gain hai bánh
+        self.left_gain  = 0.9
         self.right_gain = 0.9
-
-        # Deadzone
-        self.angular_deadband = 0.25  # rad/s, chống lệch khi muốn đi thẳng
-        self.rpm_deadband = 1.0       # rpm
 
         self.get_logger().info(
             f'Opening UART to STM32 on {port} @ {baud} '
@@ -73,54 +77,64 @@ class CmdVelToUARTNode(Node):
             self.get_logger().error(f'Cannot open serial port {port}: {e}')
             raise
 
+        # Subscriber
         self.sub_cmd_vel = self.create_subscription(
             Twist, '/cmd_vel', self.cmd_vel_callback, 10
         )
 
+        # Publisher debug
         self.motor_pub = self.create_publisher(
             Int16MultiArray, '/motor_cmd', 10
         )
 
+        # Timer gửi lệnh ổn định 10Hz
+        self.timer = self.create_timer(self.timer_period, self.process_cmd_vel)
+
         self.get_logger().info('CmdVelToUARTNode started.')
 
+    # ========== Callback lưu dữ liệu joystick + smoothing ==========
     def cmd_vel_callback(self, msg: Twist):
-        # Giới hạn tần số gửi
-        now = self.get_clock().now()
-        dt = (now - self.last_send_time).nanoseconds / 1e9
-        if dt < self.min_send_period:
-            return
-
         v = msg.linear.x
         w = msg.angular.z
+
+        # Deadband joystick
+        if abs(v) < self.linear_deadband:
+            v = 0.0
+        if abs(w) < self.angular_deadband_js:
+            w = 0.0
+
+        # Low-pass filter (EMA smoothing)
+        self.cmd_v = self.cmd_v * (1 - self.smooth_gain) + v * self.smooth_gain
+        self.cmd_w = self.cmd_w * (1 - self.smooth_gain) + w * self.smooth_gain
+
+    # ========== Hàm xử lý và gửi lệnh xuống STM32 ổn định ==========
+    def process_cmd_vel(self):
+        v = self.cmd_v
+        w = self.cmd_w
 
         # Deadzone quay
         if abs(w) < self.angular_deadband:
             w = 0.0
 
-        # Clamp theo v_max, w_max đã tách riêng
-        v = max(min(v, self.max_linear),  -self.max_linear)
+        # Clamp v and w
+        v = max(min(v, self.max_linear), -self.max_linear)
         w = max(min(w, self.max_angular), -self.max_angular)
 
+        # v,w -> rpm
         L = self.wheel_base
-
-        # v,w -> v_left, v_right (m/s)
         v_left  = v - w * L / 2.0
         v_right = v + w * L / 2.0
 
-        # m/s -> rpm
-        if self.wheel_radius > 0.0:
-            factor = 60.0 / (2.0 * math.pi * self.wheel_radius)
-        else:
-            factor = 0.0
+        factor = 60.0 / (2.0 * math.pi * self.wheel_radius)
 
-        rpm_left_f  = v_left  * factor
+        rpm_left_f  = v_left * factor
         rpm_right_f = v_right * factor
 
-        # Giới hạn rpm tổng thể theo max_rpm_linear (95 rpm)
+        # Giới hạn rpm
         rpm_left_f  = max(min(rpm_left_f,  self.max_rpm_linear), -self.max_rpm_linear)
         rpm_right_f = max(min(rpm_right_f, self.max_rpm_linear), -self.max_rpm_linear)
 
-        # Áp dụng gain
+        # Gain
         rpm_left_f  *= self.left_gain
         rpm_right_f *= self.right_gain
 
@@ -130,20 +144,13 @@ class CmdVelToUARTNode(Node):
         if abs(rpm_right_f) < self.rpm_deadband:
             rpm_right_f = 0.0
 
-        rpm_left  = int(rpm_left_f)
+        rpm_left = int(rpm_left_f)
         rpm_right = int(rpm_right_f)
 
-        # Đảo dấu theo hướng thực tế
-        if self.invert_left:
-            rpm_left = -rpm_left
-        if self.invert_right:
-            rpm_right = -rpm_right
-
-        # Không gửi lại nếu lệnh y như cũ
-        if rpm_left == self.last_rpm_left and rpm_right == self.last_rpm_right:
+        # Không gửi nếu khác quá nhỏ (< 2 rpm)
+        if abs(rpm_left - self.last_rpm_left) < 2 and abs(rpm_right - self.last_rpm_right) < 2:
             return
 
-        self.last_send_time = now
         self.last_rpm_left  = rpm_left
         self.last_rpm_right = rpm_right
 
@@ -155,6 +162,7 @@ class CmdVelToUARTNode(Node):
         # Gửi UART
         self.send_to_stm32(rpm_left, rpm_right)
 
+    # ========== Gửi UART ==========
     def send_to_stm32(self, rpm_left: int, rpm_right: int):
         if not hasattr(self, 'ser') or not self.ser.is_open:
             return
