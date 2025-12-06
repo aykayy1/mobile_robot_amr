@@ -13,7 +13,7 @@ slam_toolbox:
     odom_frame: odom
     map_frame: map
     base_frame: Base_footprint       # khớp URDF + EKF ✅
-    scan_topic: /scan                # khớp Lidar driver ✅
+    scan_topic: /scan              # khớp Lidar driver ✅
     odom_topic: /odom                # khớp remap EKF ✅
 
     use_map_saver: true

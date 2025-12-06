@@ -1,216 +1,185 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import math
+import struct
+
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Imu
 
 import serial
-import threading
-import math
-import struct
+from serial import SerialException
 
 
-def euler_to_quaternion(roll, pitch, yaw):
+def to_int16(lo: int, hi: int) -> int:
+    return struct.unpack('<h', bytes([lo, hi]))[0]
+
+
+def yaw_to_quat(yaw: float):
     """
-    roll, pitch, yaw (rad) -> quaternion (x, y, z, w)
+    Quaternion chỉ quay quanh Z:
+    roll = pitch = 0
     """
-    cy = math.cos(yaw * 0.5)
-    sy = math.sin(yaw * 0.5)
-    cp = math.cos(pitch * 0.5)
-    sp = math.sin(pitch * 0.5)
-    cr = math.cos(roll * 0.5)
-    sr = math.sin(roll * 0.5)
-
-    qw = cr * cp * cy + sr * cp * sy
-    qx = sr * cp * cy - cr * cp * sy
-    qy = cr * sp * cy + sr * sp * sy
-    qz = cr * cp * sy - sr * cp * cy
-
+    half = yaw * 0.5
+    qx = 0.0
+    qy = 0.0
+    qz = math.sin(half)
+    qw = math.cos(half)
     return qx, qy, qz, qw
 
 
 class W901ImuNode(Node):
-    """
-    Node đọc IMU W901C-RS232 (WITMotion/HWT901C) và publish sensor_msgs/Imu trên topic /imu.
-
-    Giả định IMU đang output format:
-      - 0x55 0x51 ...: Acc (ax, ay, az, Temp)
-      - 0x55 0x52 ...: Gyro (wx, wy, wz, Temp)
-      - 0x55 0x53 ...: Angle (roll, pitch, yaw, Temp)
-    """
-
     def __init__(self):
         super().__init__('w901_imu_node')
 
-        # ===== Tham số ROS2 =====
         self.declare_parameter('port', '/dev/ttyUSB1')
         self.declare_parameter('baud', 9600)
         self.declare_parameter('frame_id', 'imu_link')
 
-        port = self.get_parameter('port').get_parameter_value().string_value
-        baud = self.get_parameter('baud').get_parameter_value().integer_value
-        self.frame_id = self.get_parameter('frame_id').get_parameter_value().string_value
-
-        self.get_logger().info(f'Opening IMU serial {port} @ {baud}...')
+        port = self.get_parameter('port').value
+        baud = int(self.get_parameter('baud').value)
+        self.frame_id = self.get_parameter('frame_id').value
 
         try:
-            self.ser = serial.Serial(port, baudrate=baud, timeout=0.1)
-        except Exception as e:
-            self.get_logger().error(f'Cannot open serial port {port}: {e}')
+            self.ser = serial.Serial(
+                port=port,
+                baudrate=baud,
+                timeout=0.05
+            )
+            self.get_logger().info(f'Kết nối IMU WT901C trên {port} @ {baud} baud')
+        except SerialException as e:
+            self.get_logger().error(f'Không mở được serial: {e}')
             raise
 
-        # Publisher /imu
-        self.pub = self.create_publisher(Imu, '/imu', 50)
+        self.pub = self.create_publisher(Imu, '/imu', 10)
 
-        # Lưu giá trị mới nhất
-        self.last_accel = (0.0, 0.0, 0.0)   # m/s^2
-        self.last_gyro = (0.0, 0.0, 0.0)    # rad/s
-        self.last_rpy = (0.0, 0.0, 0.0)     # rad
+        # Accel, gyro
+        self.ax = self.ay = self.az = 0.0
+        self.wx = self.wy = self.wz = 0.0
 
-        # Thread đọc serial
-        self.thread = threading.Thread(target=self.read_loop, daemon=True)
-        self.thread.start()
+        # Chỉ dùng yaw
+        self.yaw = 0.0
+        self.qx = self.qy = self.qz = 0.0
+        self.qw = 1.0
 
-        self.get_logger().info('W901ImuNode started.')
+        self.timer = self.create_timer(0.01, self.read_and_publish)
 
-    def read_loop(self):
-        """
-        Đọc stream frame 0x55 + type + 8 data + checksum.
-        Khi nhận frame angle (0x53) thì publish 1 message Imu.
-        """
-        while rclpy.ok():
-            try:
-                head = self.ser.read(1)
-                if not head:
-                    continue
-                if head[0] != 0x55:
-                    continue
+    def read_frame(self):
+        while True:
+            head = self.ser.read(1)
+            if len(head) == 0:
+                return None
+            if head[0] != 0x55:
+                continue
 
-                # Đọc 10 byte còn lại: type(1) + data(8) + checksum(1)
-                frame = self.ser.read(10)
-                if len(frame) != 10:
-                    continue
+            type_byte = self.ser.read(1)
+            if len(type_byte) == 0:
+                return None
 
-                frame_type = frame[0]          # 0x51, 0x52, 0x53
-                data_bytes = frame[1:9]        # 8 byte data
-                checksum = frame[9]
+            data = self.ser.read(9)
+            if len(data) < 9:
+                return None
 
-                # Checksum: (0x55 + sum(type + data[8])) & 0xFF phải bằng checksum
-                calc_sum = (0x55 + sum(frame[0:9])) & 0xFF
-                if calc_sum != checksum:
-                    # self.get_logger().warn('Bad checksum frame')
-                    continue
+            frame = bytes([0x55, type_byte[0]]) + data
+            checksum = sum(frame[0:10]) & 0xFF
+            if checksum != frame[10]:
+                continue
+            return frame
 
-                if frame_type == 0x51:
-                    self.parse_acc_frame(data_bytes)
-                elif frame_type == 0x52:
-                    self.parse_gyro_frame(data_bytes)
-                elif frame_type == 0x53:
-                    self.parse_angle_frame_and_publish(data_bytes)
+    def parse_frame(self, frame: bytes):
+        ftype = frame[1]
+        d = frame[2:10]
 
-            except Exception as e:
-                self.get_logger().error(f'Error in read_loop: {e}')
+        # 0x51: acceleration
+        if ftype == 0x51:
+            ax_raw = to_int16(d[0], d[1])
+            ay_raw = to_int16(d[2], d[3])
+            az_raw = to_int16(d[4], d[5])
 
-    def parse_acc_frame(self, data_bytes):
-        # 4 * int16: ax, ay, az, Temp
-        ax_raw, ay_raw, az_raw, _temp = struct.unpack('<hhhh', data_bytes)
+            g = 9.80665
+            scale = 16.0 * g / 32768.0
+            self.ax = ax_raw * scale
+            self.ay = ay_raw * scale
+            self.az = az_raw * scale
 
-        # Theo WITMotion: range 16g -> acc (g) = raw / 32768 * 16
-        g = 9.80665
-        ax = ax_raw / 32768.0 * 16.0 * g
-        ay = ay_raw / 32768.0 * 16.0 * g
-        az = az_raw / 32768.0 * 16.0 * g
+        # 0x52: gyro
+        elif ftype == 0x52:
+            wx_raw = to_int16(d[0], d[1])
+            wy_raw = to_int16(d[2], d[3])
+            wz_raw = to_int16(d[4], d[5])
 
-        self.last_accel = (ax, ay, az)
+            deg2rad = math.pi / 180.0
+            scale = 2000.0 * deg2rad / 32768.0
+            self.wx = wx_raw * scale
+            self.wy = wy_raw * scale
+            self.wz = wz_raw * scale
 
-    def parse_gyro_frame(self, data_bytes):
-        # 4 * int16: wx, wy, wz, Temp
-        wx_raw, wy_raw, wz_raw, _temp = struct.unpack('<hhhh', data_bytes)
+        # 0x53: angles -> lấy riêng yaw
+        elif ftype == 0x53:
+            # roll_raw  = to_int16(d[0], d[1])   # bỏ
+            # pitch_raw = to_int16(d[2], d[3])   # bỏ
+            yaw_raw   = to_int16(d[4], d[5])
 
-        # Range 2000 deg/s: deg/s = raw / 32768 * 2000
-        wx_dps = wx_raw / 32768.0 * 2000.0
-        wy_dps = wy_raw / 32768.0 * 2000.0
-        wz_dps = wz_raw / 32768.0 * 2000.0
+            # datasheet: yaw(rad) = raw/32768*pi
+            self.yaw = yaw_raw / 32768.0 * math.pi
 
-        deg2rad = math.pi / 180.0
-        wx = wx_dps * deg2rad
-        wy = wy_dps * deg2rad
-        wz = wz_dps * deg2rad
+            self.qx, self.qy, self.qz, self.qw = yaw_to_quat(self.yaw)
 
-        self.last_gyro = (wx, wy, wz)
+    def read_and_publish(self):
+        try:
+            for _ in range(10):
+                frame = self.read_frame()
+                if frame is None:
+                    break
+                self.parse_frame(frame)
+        except SerialException as e:
+            self.get_logger().error(f'Lỗi đọc serial: {e}')
+            return
 
-    def parse_angle_frame_and_publish(self, data_bytes):
-        # 4 * int16: roll, pitch, yaw, Temp
-        roll_raw, pitch_raw, yaw_raw, _temp = struct.unpack('<hhhh', data_bytes)
-
-        # Theo WITMotion: angle (deg) = raw / 32768 * 180
-        roll_deg = roll_raw / 32768.0 * 180.0
-        pitch_deg = pitch_raw / 32768.0 * 180.0
-        yaw_deg = yaw_raw / 32768.0 * 180.0
-
-        deg2rad = math.pi / 180.0
-        roll = roll_deg * deg2rad
-        pitch = pitch_deg * deg2rad
-        yaw = yaw_deg * deg2rad
-
-        self.last_rpy = (roll, pitch, yaw)
-
-        # Khi có frame angle thì publish luôn 1 Imu (dùng accel + gyro gần nhất)
-        self.publish_imu()
-
-    def publish_imu(self):
         msg = Imu()
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.header.frame_id = self.frame_id
 
-        # Orientation từ roll, pitch, yaw
-        roll, pitch, yaw = self.last_rpy
-        qx, qy, qz, qw = euler_to_quaternion(roll, pitch, yaw)
-        msg.orientation.x = qx
-        msg.orientation.y = qy
-        msg.orientation.z = qz
-        msg.orientation.w = qw
+        # Orientation: chỉ yaw
+        msg.orientation.x = self.qx
+        msg.orientation.y = self.qy
+        msg.orientation.z = self.qz
+        msg.orientation.w = self.qw
 
-        # Angular velocity (rad/s)
-        wx, wy, wz = self.last_gyro
-        msg.angular_velocity.x = wx
-        msg.angular_velocity.y = wy
-        msg.angular_velocity.z = wz
+        # Gyro: bạn vẫn giữ wz để EKF dùng tốc độ quay
+        msg.angular_velocity.x = 0.0
+        msg.angular_velocity.y = 0.0
+        msg.angular_velocity.z = self.wz
 
-        # Linear acceleration (m/s^2)
-        ax, ay, az = self.last_accel
-        msg.linear_acceleration.x = ax
-        msg.linear_acceleration.y = ay
-        msg.linear_acceleration.z = az
+        # Accel (nếu EKF không cần có thể set 0)
+        msg.linear_acceleration.x = self.ax
+        msg.linear_acceleration.y = self.ay
+        msg.linear_acceleration.z = self.az
 
-        # ===== Covariance cho robot_localization (có thể tune lại sau) =====
-        # Orientation covariance (rad^2)
-        # Giả sử sai số ~2 độ cho mỗi trục
-        var_roll  = math.radians(2.0) ** 2
-        var_pitch = math.radians(2.0) ** 2
-        var_yaw   = math.radians(5.0) ** 2   # yaw thường kém chính xác hơn
-
+        # Covariance: roll/pitch rất “tệ” (không dùng), yaw tốt
+        big = 1e3  # cho EKF biết roll/pitch không tin
+        yaw_std = math.radians(2.0)  # bạn thấy yaw tốt -> để nhỏ
         msg.orientation_covariance = [
-            var_roll, 0.0,      0.0,
-            0.0,      var_pitch,0.0,
-            0.0,      0.0,      var_yaw
+            big, 0.0, 0.0,
+            0.0, big, 0.0,
+            0.0, 0.0, yaw_std**2
         ]
 
-        # Angular velocity covariance (rad^2/s^2)
-        # Giả sử sai số ~0.05 rad/s
-        var_gyro = (0.05) ** 2
+        # Gyro covariance: chỉ tin z
+        gyro_std_z = math.radians(0.5)
         msg.angular_velocity_covariance = [
-            var_gyro, 0.0,     0.0,
-            0.0,      var_gyro,0.0,
-            0.0,      0.0,     var_gyro
+            big, 0.0, 0.0,
+            0.0, big, 0.0,
+            0.0, 0.0, gyro_std_z**2
         ]
 
-        # Linear acceleration covariance (m^2/s^4)
-        # Giả sử sai số ~0.1 m/s^2
-        var_acc = (0.1) ** 2
+        # Acc covariance: để vừa phải (hoặc big nếu không dùng accel)
+        acc_std = 0.1
         msg.linear_acceleration_covariance = [
-            var_acc, 0.0,    0.0,
-            0.0,     var_acc,0.0,
-            0.0,     0.0,    var_acc
+            acc_std**2, 0.0, 0.0,
+            0.0, acc_std**2, 0.0,
+            0.0, 0.0, acc_std**2
         ]
 
         self.pub.publish(msg)

@@ -4,11 +4,15 @@ from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import IncludeLaunchDescription
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 import os
 
 
 def generate_launch_description():
+
+    pkg = 'agv0509test6'
+    pkg_share = get_package_share_directory(pkg)
 
     declare_lidar_port = DeclareLaunchArgument(
         'lidar_port',
@@ -33,7 +37,9 @@ def generate_launch_description():
         }.items()
     )
 
+
+
     return LaunchDescription([
         declare_lidar_port,
-        lidar_launch
+        lidar_launch,
     ])

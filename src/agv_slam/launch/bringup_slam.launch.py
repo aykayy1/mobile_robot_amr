@@ -55,16 +55,9 @@ def generate_launch_description():
 
     # ============================
     # CMD_VEL → UART STM32
+    # ===========================
     # ============================
-    cmd_vel_uart_node = Node(
-        package='agv_sensors',
-        executable='cmd_vel_to_uart',
-        name='cmd_vel_to_uart',
-        output='screen'
-    )
-
-    # ============================
-    # ROBOT STATE + EKF
+    # ROBOT STATE + EKF + DISPLAY
     # ============================
     agv_display = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -73,12 +66,29 @@ def generate_launch_description():
     )
 
     # ============================
-    # SLAM TOOLBOX
+    # SLAM TOOLBOX (ĐÃ CHỈNH SỬA)
     # ============================
-    slam_toolbox = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_slam, 'launch', 'slam.launch.py')
-        )
+    slam_params = os.path.join(
+        pkg_slam,
+        'config',
+        'slam_toolbox_params.yaml'
+    )
+
+    slam_node = Node(
+        package='slam_toolbox',
+        executable='sync_slam_toolbox_node',
+        name='slam_toolbox',
+        output='screen',
+        parameters=[
+            slam_params,
+            {
+                'odom_frame': 'odom',
+                'base_frame': 'Base_footprint',   # chuẩn TF ROS2
+                'map_frame': 'map',
+                'scan_topic': '/scan',
+                'use_sim_time': False
+            }
+        ]
     )
 
     # ============================
@@ -106,7 +116,9 @@ def generate_launch_description():
         lidar_launch,
         imu_launch,
         wheel_vel_node,
-        cmd_vel_uart_node,
+        #cmd_vel_uart_node,
         agv_display,
-        slam_toolbox
+
+        # SLAM toolbox node (đưa vào launch)
+        slam_node
     ])

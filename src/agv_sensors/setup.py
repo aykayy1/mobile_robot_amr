@@ -43,6 +43,8 @@ setup(
 
             # Nếu SAU NÀY em có file agv_sensors/lidar_node.py thì bật lại dòng này
             # 'lidar_node = agv_sensors.lidar_node:main',
+            
+
         ],
     },
 )

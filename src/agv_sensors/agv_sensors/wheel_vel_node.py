@@ -175,12 +175,12 @@ class WheelVelNode(Node):
                     rpm_right = +self.base_rpm
                 elif key == "a":
                     # quay trái tại chỗ
-                    rpm_left = +self.base_rpm_rota
-                    rpm_right = +self.base_rpm_rota
-                elif key == "d":
-                    # quay phải tại chỗ
                     rpm_left = -self.base_rpm_rota
                     rpm_right = -self.base_rpm_rota
+                elif key == "d":
+                    # quay phải tại chỗ
+                    rpm_left = +self.base_rpm_rota
+                    rpm_right = +self.base_rpm_rota
                 elif key == "x":
                     # dừng
                     rpm_left = 0.0
