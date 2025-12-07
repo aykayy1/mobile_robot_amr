@@ -192,7 +192,7 @@ def generate_launch_description():
             'odom_frame': 'odom',
             'base_frame': 'Base_footprint',
             'map_frame': 'map',
-            'scan_topic': '/scan'
+            'scan_topic': '/scan_filtered'
         }]
     )
 
@@ -216,6 +216,6 @@ def generate_launch_description():
         lidar_launch,          # t = 0s
         imu_delayed,           # t = 5s
         agv_display_delayed,   # t = 10s (start RSP + EKF)
-        #scan_filter_after_rsp, # chạy sau khi RSP start (≈ t=11s)
-        slam_delayed,          # t = 13s
+        scan_filter_after_rsp, # chạy sau khi RSP start (≈ t=11s)
+        #slam_delayed,          # t = 13s
     ])

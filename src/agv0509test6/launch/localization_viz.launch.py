@@ -7,7 +7,7 @@ from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-    pkg = 'agv0509test6'
+    pkg = 'agv0509test6' 
     pkg_share = get_package_share_directory(pkg)
 
     # ====== ARGS ======
@@ -30,7 +30,7 @@ def generate_launch_description():
     amcl_params = LaunchConfiguration('amcl_params')
 
     # Map YAML (my_map.yaml)
-    default_map = '/home/anhkhoa/Mobile_robot/agv_ws/maps/new_map.yaml'
+    default_map = '/home/hcmute/maps/my_map_tesgt.yaml'
     map_arg = DeclareLaunchArgument(
         'map',
         default_value=default_map,
@@ -49,7 +49,7 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         arguments=(['-d', rviz_cfg] if (str(rviz_cfg) != '') else []),
-        parameters=[{'use_sim_time': True}],
+        parameters=[{'use_sim_time': False}],
         output='screen'
     )
 
@@ -60,7 +60,7 @@ def generate_launch_description():
         name='map_server',
         output='screen',
         parameters=[
-            {'use_sim_time': True},
+            {'use_sim_time': False},
             {'yaml_filename': map_yaml}
         ]
     )
@@ -71,7 +71,7 @@ def generate_launch_description():
         executable='amcl',
         name='amcl',
         output='screen',
-        parameters=[amcl_params, {'use_sim_time': True}]
+        parameters=[amcl_params, {'use_sim_time': False}]
     )
 
     # Lifecycle manager 
@@ -81,7 +81,7 @@ def generate_launch_description():
         name='lifecycle_manager_localization',
         output='screen',
         parameters=[
-            {'use_sim_time': True},
+            {'use_sim_time': False},
             {'autostart': True},
             {'node_names': ['map_server', 'amcl']}
         ]
@@ -90,10 +90,10 @@ def generate_launch_description():
 
 
     return LaunchDescription([
-        rviz_arg,
+        #rviz_arg,
         amcl_arg,
         map_arg,
-        rviz,
+        #rviz,
         map_server,
         amcl,
         lifecycle_manager
