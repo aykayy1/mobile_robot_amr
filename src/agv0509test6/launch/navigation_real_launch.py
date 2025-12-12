@@ -19,7 +19,7 @@ def generate_launch_description():
     )
 
     use_sim_time = LaunchConfiguration('use_sim_time')
-    declare_use_sim_time = DeclareLaunchArgument('use_sim_time', default_value='True')
+    declare_use_sim_time = DeclareLaunchArgument('use_sim_time', default_value='False')
 
     lifecycle_nodes = [
         'controller_server',

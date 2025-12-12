@@ -1,198 +1,317 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import math
-import struct
-
+import serial
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Imu
+from geometry_msgs.msg import Quaternion
+from std_msgs.msg import Float64
 
-import serial
-from serial import SerialException
+HEADER = 0x55
 
-
-def to_int16(lo: int, hi: int) -> int:
-    return struct.unpack('<h', bytes([lo, hi]))[0]
-
-
-def yaw_to_quat(yaw: float):
-    """
-    Quaternion chỉ quay quanh Z:
-    roll = pitch = 0
-    """
-    half = yaw * 0.5
-    qx = 0.0
-    qy = 0.0
-    qz = math.sin(half)
-    qw = math.cos(half)
-    return qx, qy, qz, qw
+PKT_ACC   = 0x51
+PKT_GYRO  = 0x52
+PKT_ANGLE = 0x53
+PKT_QUAT  = 0x59
 
 
-class W901ImuNode(Node):
+def euler_to_quat(roll, pitch, yaw):
+    """Convert Euler (rad) -> geometry_msgs/Quaternion."""
+    cy = math.cos(yaw * 0.5)
+    sy = math.sin(yaw * 0.5)
+    cp = math.cos(pitch * 0.5)
+    sp = math.sin(pitch * 0.5)
+    cr = math.cos(roll * 0.5)
+    sr = math.sin(roll * 0.5)
+
+    q = Quaternion()
+    q.w = cr * cp * cy + sr * sp * sy
+    q.x = sr * cp * cy - cr * sp * sy
+    q.y = cr * sp * cy + sr * cp * sy
+    q.z = cr * cp * sy - sr * sp * cy
+    return q
+
+
+def normalize_quat(q: Quaternion):
+    n = math.sqrt(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z)
+    if n > 1e-9:
+        q.w /= n
+        q.x /= n
+        q.y /= n
+        q.z /= n
+    return q
+
+
+class WT901CImuNode(Node):
     def __init__(self):
-        super().__init__('w901_imu_node')
+        super().__init__('wt901c_imu_node')
 
-        self.declare_parameter('port', '/dev/ttyUSB1')
-        self.declare_parameter('baud', 9600)
+        # Parameters
+        self.declare_parameter('port', '/dev/ttyUSB0')
+        self.declare_parameter('baudrate', 9600)
         self.declare_parameter('frame_id', 'imu_link')
+        self.declare_parameter('prefer_quat', True)   # ưu tiên 0x59 nếu có
+        self.declare_parameter('yaw_sign', 1.0)       # +1 hoặc -1 để đảo chiều yaw
+        self.declare_parameter('yaw_correction_gain', 0.005)  # alpha trong complementary filter
 
         port = self.get_parameter('port').value
-        baud = int(self.get_parameter('baud').value)
+        baud = int(self.get_parameter('baudrate').value)
         self.frame_id = self.get_parameter('frame_id').value
+        self.prefer_quat = bool(self.get_parameter('prefer_quat').value)
+        self.yaw_sign = float(self.get_parameter('yaw_sign').value)
+        self.yaw_alpha = float(self.get_parameter('yaw_correction_gain').value)
 
+        # Serial
+        self.ser = serial.Serial(
+            port=port,
+            baudrate=baud,
+            bytesize=serial.EIGHTBITS,
+            parity=serial.PARITY_NONE,
+            stopbits=serial.STOPBITS_ONE,
+            timeout=0.05,
+        )
+        self.get_logger().info(f'WT901C on {port} @ {baud} baud')
+
+        # Publishers
+        self.imu_pub = self.create_publisher(Imu, '/imu', 50)
+        self.yaw_pub = self.create_publisher(Float64, '/imu/yaw', 10)
+
+        # State
+        self.buf = bytearray()
+        self.last_acc = None      # (ax, ay, az) m/s^2
+        self.last_gyro = None     # (gx, gy, gz) rad/s
+        self.last_quat = None     # Quaternion (raw từ IMU, dùng cho roll/pitch + yaw_abs)
+
+        self.seen_quat = False    # đã từng nhận frame 0x59 chưa
+
+        # Gyro-integrated yaw (relative), với correction từ yaw_abs
+        self.yaw_est = 0.0        # yaw_gyro (rad), có thể > 2π
+        self.last_time = self.get_clock().now()
+        self.have_time = False
+
+        # Gyro bias calibration (đơn giản): lấy trung bình gz lúc đứng yên ban đầu
+        self.gyro_bias = 0.0
+        self.bias_sum = 0.0
+        self.bias_count = 0
+        self.bias_calib_done = False
+        self.bias_max_samples = 500      # ~2.5s nếu 200Hz
+        self.bias_gz_thresh = 0.05       # rad/s, dưới ngưỡng coi như đứng yên
+
+        self.timer = self.create_timer(0.005, self.read_loop)
+
+    def read_loop(self):
+        """Đọc serial và parse."""
         try:
-            self.ser = serial.Serial(
-                port=port,
-                baudrate=baud,
-                timeout=0.05
-            )
-            self.get_logger().info(f'Kết nối IMU WT901C trên {port} @ {baud} baud')
-        except SerialException as e:
-            self.get_logger().error(f'Không mở được serial: {e}')
-            raise
-
-        self.pub = self.create_publisher(Imu, '/imu', 10)
-
-        # Accel, gyro
-        self.ax = self.ay = self.az = 0.0
-        self.wx = self.wy = self.wz = 0.0
-
-        # Chỉ dùng yaw
-        self.yaw = 0.0
-        self.qx = self.qy = self.qz = 0.0
-        self.qw = 1.0
-
-        self.timer = self.create_timer(0.01, self.read_and_publish)
-
-    def read_frame(self):
-        while True:
-            head = self.ser.read(1)
-            if len(head) == 0:
-                return None
-            if head[0] != 0x55:
-                continue
-
-            type_byte = self.ser.read(1)
-            if len(type_byte) == 0:
-                return None
-
-            data = self.ser.read(9)
-            if len(data) < 9:
-                return None
-
-            frame = bytes([0x55, type_byte[0]]) + data
-            checksum = sum(frame[0:10]) & 0xFF
-            if checksum != frame[10]:
-                continue
-            return frame
-
-    def parse_frame(self, frame: bytes):
-        ftype = frame[1]
-        d = frame[2:10]
-
-        # 0x51: acceleration
-        if ftype == 0x51:
-            ax_raw = to_int16(d[0], d[1])
-            ay_raw = to_int16(d[2], d[3])
-            az_raw = to_int16(d[4], d[5])
-
-            g = 9.80665
-            scale = 16.0 * g / 32768.0
-            self.ax = ax_raw * scale
-            self.ay = ay_raw * scale
-            self.az = az_raw * scale
-
-        # 0x52: gyro
-        elif ftype == 0x52:
-            wx_raw = to_int16(d[0], d[1])
-            wy_raw = to_int16(d[2], d[3])
-            wz_raw = to_int16(d[4], d[5])
-
-            deg2rad = math.pi / 180.0
-            scale = 2000.0 * deg2rad / 32768.0
-            self.wx = wx_raw * scale
-            self.wy = wy_raw * scale
-            self.wz = wz_raw * scale
-
-        # 0x53: angles -> lấy riêng yaw
-        elif ftype == 0x53:
-            # roll_raw  = to_int16(d[0], d[1])   # bỏ
-            # pitch_raw = to_int16(d[2], d[3])   # bỏ
-            yaw_raw   = to_int16(d[4], d[5])
-
-            # datasheet: yaw(rad) = raw/32768*pi
-            self.yaw = yaw_raw / 32768.0 * math.pi
-
-            self.qx, self.qy, self.qz, self.qw = yaw_to_quat(self.yaw)
-
-    def read_and_publish(self):
-        try:
-            for _ in range(10):
-                frame = self.read_frame()
-                if frame is None:
-                    break
-                self.parse_frame(frame)
-        except SerialException as e:
-            self.get_logger().error(f'Lỗi đọc serial: {e}')
+            data = self.ser.read(256)
+        except Exception as e:
+            self.get_logger().warn(f'Serial read error: {e}')
             return
 
+        if data:
+            self.buf.extend(data)
+            self.parse_buffer()
+
+    def parse_buffer(self):
+        """Tìm frame 11 byte: 0x55, id, payload(8), crc."""
+        while len(self.buf) >= 11:
+            if self.buf[0] != HEADER:
+                del self.buf[0]
+                continue
+
+            frame = self.buf[:11]
+            crc = sum(frame[0:10]) & 0xFF
+            if crc != frame[10]:
+                # sai checksum, trượt 1 byte
+                del self.buf[0]
+                continue
+
+            pkt_id = frame[1]
+            payload = frame[2:10]
+            self.handle_packet(pkt_id, payload)
+            del self.buf[:11]
+
+    def handle_packet(self, pkt_id, payload):
+        """Decode từng packet."""
+        def to_i16(lo, hi):
+            v = (hi << 8) | lo
+            return v - 65536 if v >= 32768 else v
+
+        if pkt_id == PKT_ACC:
+            ax = to_i16(payload[0], payload[1])
+            ay = to_i16(payload[2], payload[3])
+            az = to_i16(payload[4], payload[5])
+
+            # range ±16g -> m/s^2
+            ax = ax / 32768.0 * 16.0 * 9.81
+            ay = ay / 32768.0 * 16.0 * 9.81
+            az = az / 32768.0 * 16.0 * 9.81
+            self.last_acc = (ax, ay, az)
+
+        elif pkt_id == PKT_GYRO:
+            gx = to_i16(payload[0], payload[1])
+            gy = to_i16(payload[2], payload[3])
+            gz = to_i16(payload[4], payload[5])
+
+            # range ±2000 deg/s -> rad/s
+            gx = gx / 32768.0 * 2000.0
+            gy = gy / 32768.0 * 2000.0
+            gz = gz / 32768.0 * 2000.0
+            d2r = math.pi / 180.0
+            self.last_gyro = (gx * d2r, gy * d2r, gz * d2r)
+
+        elif pkt_id == PKT_QUAT:
+            # quaternion 0x59: q0,q1,q2,q3 scaled by 1/32768
+            q0 = to_i16(payload[0], payload[1]) / 32768.0
+            q1 = to_i16(payload[2], payload[3]) / 32768.0
+            q2 = to_i16(payload[4], payload[5]) / 32768.0
+            q3 = to_i16(payload[6], payload[7]) / 32768.0
+            q = Quaternion()
+            q.w, q.x, q.y, q.z = q0, q1, q2, q3
+            self.last_quat = normalize_quat(q)
+            self.seen_quat = True
+
+        elif pkt_id == PKT_ANGLE:
+            # chỉ dùng Euler nếu chưa thấy quat hoặc prefer_quat=False
+            if self.prefer_quat and self.seen_quat:
+                return
+
+            roll  = to_i16(payload[0], payload[1]) / 32768.0 * 180.0
+            pitch = to_i16(payload[2], payload[3]) / 32768.0 * 180.0
+            yaw   = to_i16(payload[4], payload[5]) / 32768.0 * 180.0
+
+            r = roll * math.pi / 180.0
+            p = pitch * math.pi / 180.0
+            y = yaw * math.pi / 180.0 * self.yaw_sign
+
+            q = euler_to_quat(r, p, y)
+            self.last_quat = normalize_quat(q)
+
+        # Khi đủ acc + gyro + quat thì publish
+        if (
+            self.last_acc is not None
+            and self.last_gyro is not None
+            and self.last_quat is not None
+        ):
+            self.publish_imu()
+
+    def publish_imu(self):
+        """Publish /imu và /imu/yaw với yaw_est (gyro + correction)."""
+        now = self.get_clock().now()
+        if not self.have_time:
+            self.last_time = now
+            self.have_time = True
+            dt = 0.0
+        else:
+            dt = (now.nanoseconds - self.last_time.nanoseconds) * 1e-9
+            if dt < 0.0:
+                dt = 0.0
+            self.last_time = now
+
+        ax, ay, az = self.last_acc
+        gx, gy, gz = self.last_gyro
+        gz_yaw = gz * self.yaw_sign  # rad/s
+
+        # --- gyro bias calibration đơn giản lúc đầu ---
+        if not self.bias_calib_done and dt > 0.0:
+            if abs(gz_yaw) < self.bias_gz_thresh:
+                self.bias_sum += gz_yaw
+                self.bias_count += 1
+                if self.bias_count >= self.bias_max_samples:
+                    self.gyro_bias = self.bias_sum / self.bias_count
+                    self.bias_calib_done = True
+                    self.get_logger().info(
+                        f"Gyro bias calibrated: {self.gyro_bias:.6f} rad/s"
+                    )
+
+        gz_corr = gz_yaw - (self.gyro_bias if self.bias_calib_done else 0.0)
+
+        # --- tính yaw tuyệt đối từ quaternion IMU (để correction) ---
+        q_raw = self.last_quat
+        # roll, pitch, yaw_raw từ quaternion (REP-103)
+        sinr_cosp = 2.0 * (q_raw.w * q_raw.x + q_raw.y * q_raw.z)
+        cosr_cosp = 1.0 - 2.0 * (q_raw.x * q_raw.x + q_raw.y * q_raw.y)
+        roll = math.atan2(sinr_cosp, cosr_cosp)
+
+        sinp = 2.0 * (q_raw.w * q_raw.y - q_raw.z * q_raw.x)
+        if abs(sinp) >= 1.0:
+            pitch = math.copysign(math.pi / 2.0, sinp)
+        else:
+            pitch = math.asin(sinp)
+
+        siny_cosp = 2.0 * (q_raw.w * q_raw.z + q_raw.x * q_raw.y)
+        cosy_cosp = 1.0 - 2.0 * (q_raw.y * q_raw.y + q_raw.z * q_raw.z)
+        yaw_abs = math.atan2(siny_cosp, cosy_cosp) * self.yaw_sign  # [-pi, pi]
+
+        # --- tích phân yaw từ gyro + bổ sung correction từ yaw_abs ---
+        yaw_pred = self.yaw_est + gz_corr * dt  # dự đoán theo gyro
+
+        # unwrap yaw_abs quanh yaw_pred (để không nhảy ±pi)
+        yaw_corr = yaw_abs
+        dy = yaw_corr - yaw_pred
+        if dy > math.pi:
+            yaw_corr -= 2.0 * math.pi
+        elif dy < -math.pi:
+            yaw_corr += 2.0 * math.pi
+
+        alpha = self.yaw_alpha
+        self.yaw_est = (1.0 - alpha) * yaw_pred + alpha * yaw_corr
+
+        # --- build quaternion mới với roll, pitch từ IMU + yaw_est ---
+        q_fused = euler_to_quat(roll, pitch, self.yaw_est)
+
+        # Fill Imu message
         msg = Imu()
-        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.stamp = now.to_msg()
         msg.header.frame_id = self.frame_id
 
-        # Orientation: chỉ yaw
-        msg.orientation.x = self.qx
-        msg.orientation.y = self.qy
-        msg.orientation.z = self.qz
-        msg.orientation.w = self.qw
+        msg.orientation = q_fused
 
-        # Gyro: bạn vẫn giữ wz để EKF dùng tốc độ quay
-        msg.angular_velocity.x = 0.0
-        msg.angular_velocity.y = 0.0
-        msg.angular_velocity.z = self.wz
+        msg.linear_acceleration.x = ax
+        msg.linear_acceleration.y = ay
+        msg.linear_acceleration.z = az
 
-        # Accel (nếu EKF không cần có thể set 0)
-        msg.linear_acceleration.x = self.ax
-        msg.linear_acceleration.y = self.ay
-        msg.linear_acceleration.z = self.az
+        msg.angular_velocity.x = gx
+        msg.angular_velocity.y = gy
+        msg.angular_velocity.z = gz
 
-        # Covariance: roll/pitch rất “tệ” (không dùng), yaw tốt
-        big = 1e3  # cho EKF biết roll/pitch không tin
-        yaw_std = math.radians(2.0)  # bạn thấy yaw tốt -> để nhỏ
         msg.orientation_covariance = [
-            big, 0.0, 0.0,
-            0.0, big, 0.0,
-            0.0, 0.0, yaw_std**2
+            0.02, 0.0, 0.0,
+            0.0, 0.02, 0.0,
+            0.0, 0.0, 0.04
         ]
-
-        # Gyro covariance: chỉ tin z
-        gyro_std_z = math.radians(0.5)
         msg.angular_velocity_covariance = [
-            big, 0.0, 0.0,
-            0.0, big, 0.0,
-            0.0, 0.0, gyro_std_z**2
+            0.01, 0.0, 0.0,
+            0.0, 0.01, 0.0,
+            0.0, 0.0, 0.02
         ]
-
-        # Acc covariance: để vừa phải (hoặc big nếu không dùng accel)
-        acc_std = 0.1
         msg.linear_acceleration_covariance = [
-            acc_std**2, 0.0, 0.0,
-            0.0, acc_std**2, 0.0,
-            0.0, 0.0, acc_std**2
+            0.1, 0.0, 0.0,
+            0.0, 0.1, 0.0,
+            0.0, 0.0, 0.2
         ]
 
-        self.pub.publish(msg)
+        self.imu_pub.publish(msg)
+
+        # Publish yaw_est ra /imu/yaw
+        yaw_msg = Float64()
+        yaw_msg.data = self.yaw_est    # rad, liên tục, có thể > 2*pi
+        self.yaw_pub.publish(yaw_msg)
+
+    def destroy_node(self):
+        try:
+            if self.ser and self.ser.is_open:
+                self.ser.close()
+        except Exception:
+            pass
+        super().destroy_node()
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    node = W901ImuNode()
+def main():
+    rclpy.init()
+    node = WT901CImuNode()
     try:
         rclpy.spin(node)
     finally:
-        if hasattr(node, 'ser') and node.ser.is_open:
-            node.ser.close()
         node.destroy_node()
         rclpy.shutdown()
 

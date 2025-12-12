@@ -11,7 +11,7 @@ import os
 
 def generate_launch_description():
 
-    pkg = 'agv0509test6'
+    pkg = 'agv_sensors'
     pkg_share = get_package_share_directory(pkg)
 
     declare_lidar_port = DeclareLaunchArgument(

@@ -54,7 +54,7 @@ def generate_launch_description():
 
     declare_imu_baud = DeclareLaunchArgument(
         'imu_baud',
-        default_value='9600',
+        default_value='115200',
         description='Baudrate of IMU'
     )
 
@@ -66,8 +66,8 @@ def generate_launch_description():
 
     imu_node = Node(
         package='agv_sensors',
-        executable='imu_node',
-        name='w901_imu_node',
+        executable='khoa',
+        name='hwt901b_modbus',
         output='screen',
         parameters=[{
             'port': LaunchConfiguration('imu_port'),
@@ -192,7 +192,7 @@ def generate_launch_description():
             'odom_frame': 'odom',
             'base_frame': 'Base_footprint',
             'map_frame': 'map',
-            'scan_topic': '/scan_filtered'
+            'scan_topic': '/scan'
         }]
     )
 
@@ -217,5 +217,5 @@ def generate_launch_description():
         imu_delayed,           # t = 5s
         agv_display_delayed,   # t = 10s (start RSP + EKF)
         scan_filter_after_rsp, # chạy sau khi RSP start (≈ t=11s)
-        #slam_delayed,          # t = 13s
+        slam_delayed,          # t = 13s
     ])

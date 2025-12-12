@@ -41,6 +41,11 @@ setup(
             
             'wheel_vel_from_stm32 = agv_sensors.wheel_vel_from_stm32:main',
 
+            'wheel_vel_node_nav = agv_sensors.wheel_vel_node_nav:main',
+            
+            'hwt901b_imu = agv_sensors.hwt901b_imu:main',
+            
+            'khoa = agv_sensors.khoa:main',
             # Nếu SAU NÀY em có file agv_sensors/lidar_node.py thì bật lại dòng này
             # 'lidar_node = agv_sensors.lidar_node:main',
             

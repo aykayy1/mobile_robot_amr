@@ -1,39 +1,51 @@
-ekf_filter:
+ekf_odom_node:
   ros__parameters:
     frequency: 30.0
-    sensor_timeout: 0.2
+    sensor_timeout: 0.1
+
     two_d_mode: true
     publish_tf: true
-    publish_acceleration: true
+    publish_acceleration: false
 
-    odom0: /odom
-    odom0_config: [true, true, false,
-                      false, false, true,
-                      true, true, false,
-                      false, false, true,
-                      false, false, false]
-
-
-    imu0: /imu
-    imu0_config:  [ false, false, false,
-                    true, true, true,   
-                    false, false, false,
-                    false, false, true,   
-                    false, false, false]
-
-
-    imu0_differential: false
-    imu0_queue_size: 20
-    imu0_remove_gravitational_acceleration: true
-    imu0_rejection_threshold: 2.5
-                  
-
-    odom0_differential: false
-    odom0_queue_size: 10
-    odom0_rejection_threshold: 1.0
-
-
+    map_frame: map
     odom_frame: odom
     base_link_frame: Base_footprint
- 
+    world_frame: odom
 
+    # ========== WHEEL VELOCITY (JETSON) ==========
+    twist0: /wheel_vel
+
+    # [x, y, z,
+    #  roll, pitch, yaw,
+    #  vx, vy, vz,
+    #  vroll, vpitch, vyaw,
+    #  ax, ay, az]
+    twist0_config: [
+      false, false, false,
+      false, false, false,
+      true,  false, false,
+      false, false, false,
+      false, false, false
+    ]
+
+    twist0_differential: false
+    twist0_relative: false
+    twist0_nodelay: false
+    twist0_queue_size: 10
+
+    # ========== IMU ==========
+    imu0: /imu
+
+    imu0_config: [
+      false, false, false,  # x, y, z (IMU không cho position)
+      false, false, true,   # roll, pitch, yaw
+      false, false, false,  # vx, vy, vz
+      false, false, true,   # vroll, vpitch, vyaw (chỉ dùng yaw rate)
+      false, false, false   # ax, ay, az (tạm chưa fuse accel)
+    ]
+
+    imu0_differential: false
+    imu0_relative: false
+    imu0_nodelay: false
+    imu0_queue_size: 10
+    imu0_remove_gravitational_acceleration: true

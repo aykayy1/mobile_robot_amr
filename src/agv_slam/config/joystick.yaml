@@ -23,6 +23,6 @@ teleop_node:
     axis_angular:
       z: 0                 # Stick trái trái/phải
     scale_angular:
-      z: 0.5
+      z: -0.5
     scale_angular_turbo:
-      z: 1.0
+      z: -1.0
