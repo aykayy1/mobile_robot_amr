@@ -15,20 +15,18 @@ class WheelVelNode(Node):
     def __init__(self):
         super().__init__('wheel_vel_node')
 
-        # ===== Tham số ROS2 =====
-        self.declare_parameter('port', '/dev/ttyACM0')      # Port UART từ STM32
-        self.declare_parameter('baud', 38400)              # Baudrate
+        # ===== ROS2 Parameters =====
+        self.declare_parameter('port', '/dev/ttyACM0')
+        self.declare_parameter('baud', 115200)
 
-        self.declare_parameter('wheel_radius', 0.1)        # [m]
-        self.declare_parameter('wheel_separation', 0.636)  # [m]
-        self.declare_parameter('gear_ratio', 10.0)         # nếu rpm STM32 là rpm motor
-        self.declare_parameter('rpm_max', 200.0)           # giới hạn rpm gửi xuống
+        self.declare_parameter('wheel_radius', 0.1)
+        self.declare_parameter('wheel_separation', 0.636)
+        self.declare_parameter('gear_ratio', 10.0)
+        self.declare_parameter('rpm_max', 200.0)
 
         self.declare_parameter('cmd_vel_topic', '/cmd_vel')
-
-        # ✅ set default luôn trong code
-        self.declare_parameter('invert_right_wheel', True)  # mặc định đảo bánh phải
-        self.declare_parameter('send_period', 0.2)          # mặc định 200ms
+        self.declare_parameter('invert_right_wheel', False)
+        self.declare_parameter('send_period', 0.2)
 
         port = self.get_parameter('port').value
         baud = int(self.get_parameter('baud').value)
@@ -44,18 +42,14 @@ class WheelVelNode(Node):
 
         # ===== Serial =====
         self.get_logger().info(f"Opening serial {port} @ {baud}...")
-        try:
-            self.ser = serial.Serial(
-                port,
-                baudrate=baud,
-                bytesize=serial.EIGHTBITS,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                timeout=0.05,
-            )
-        except Exception as e:
-            self.get_logger().error(f"Cannot open serial: {e}")
-            raise
+        self.ser = serial.Serial(
+            port,
+            baudrate=baud,
+            bytesize=serial.EIGHTBITS,
+            parity=serial.PARITY_NONE,
+            stopbits=serial.STOPBITS_ONE,
+            timeout=0.05,
+        )
 
         # ===== Publishers =====
         self.pub = self.create_publisher(
@@ -70,7 +64,7 @@ class WheelVelNode(Node):
             10
         )
 
-        # ===== Sub cmd_vel từ Nav2 =====
+        # ===== Subscriber =====
         self.cmd_sub = self.create_subscription(
             Twist,
             self.cmd_vel_topic,
@@ -78,40 +72,38 @@ class WheelVelNode(Node):
             20
         )
 
-        # Cache cmd_vel mới nhất
+        # ===== Internal State =====
         self._cmd_lock = threading.Lock()
         self._last_v = 0.0
         self._last_w = 0.0
-        self._last_cmd_time = self.get_clock().now()
 
-        # ===== Biến lưu rpm đọc được từ STM32 =====
         self._lock = threading.Lock()
         self._last_left_rpm = 0.0
         self._last_right_rpm = 0.0
         self._running = True
 
-        # ===== Thread đọc serial STM32 -> Jetson =====
-        self.serial_thread = threading.Thread(target=self.serial_read_thread, daemon=True)
+        # ===== Threads & Timers =====
+        self.serial_thread = threading.Thread(
+            target=self.serial_read_thread,
+            daemon=True
+        )
         self.serial_thread.start()
 
-        # ===== Timer publish odom từ rpm STM32 =====
-        self.timer_period = 0.02  # 50Hz để odom mượt
-        self.timer = self.create_timer(self.timer_period, self.timer_callback)
+        self.timer = self.create_timer(0.02, self.timer_callback)
 
-        # ===== Timer gửi rpm xuống STM32 (throttle) =====
         if self.send_period > 0.0:
-            self.send_timer = self.create_timer(self.send_period, self.send_timer_callback)
+            self.send_timer = self.create_timer(
+                self.send_period,
+                self.send_timer_callback
+            )
         else:
-            self.send_timer = None  # gửi trực tiếp trong callback cmd_vel
+            self.send_timer = None
 
-        self.get_logger().info(
-            f"WheelVelNode ready. cmd_vel={self.cmd_vel_topic}, "
-            f"send_period={self.send_period}s, invert_right={self.invert_right}"
-        )
+        self.get_logger().info("WheelVelNode READY")
 
-    # =========================================================
-    # 1) NHẬN DỮ LIỆU TỪ STM32 -> publish /wheel_vel_raw, /wheel_vel
-    # =========================================================
+    # =====================================================
+    # STM32 -> Jetson
+    # =====================================================
     def serial_read_thread(self):
         while self._running and rclpy.ok():
             try:
@@ -119,10 +111,7 @@ class WheelVelNode(Node):
                 if not line:
                     continue
 
-                raw_msg = String()
-                raw_msg.data = line
-                self.pub_raw.publish(raw_msg)
-
+                self.pub_raw.publish(String(data=line))
                 parts = line.split(',')
 
                 if len(parts) == 3 and parts[0].upper() == "VEL":
@@ -141,7 +130,7 @@ class WheelVelNode(Node):
             except Exception:
                 continue
 
-    def rpm_to_ms(self, rpm: float) -> float:
+    def rpm_to_ms(self, rpm):
         wheel_rpm = rpm / self.gear_ratio if self.gear_ratio != 0.0 else rpm
         omega = wheel_rpm * (2.0 * math.pi / 60.0)
         return omega * self.wheel_radius
@@ -164,35 +153,33 @@ class WheelVelNode(Node):
         msg.twist.twist.linear.x = v
         msg.twist.twist.angular.z = w
 
-        for i in range(36):
-            msg.twist.covariance[i] = 0.0
-        msg.twist.covariance[0] = 0.01
-        msg.twist.covariance[35] = 0.01
+        # ✅ TẤT CẢ COVARIANCE = 0
+        msg.twist.covariance = [0.0] * 36
 
         self.pub.publish(msg)
 
-    # =========================================================
-    # 2) NHẬN /cmd_vel -> đổi sang rpm -> gửi xuống STM32
-    # =========================================================
+    # =====================================================
+    # cmd_vel -> STM32
+    # =====================================================
     def ms_to_rpm(self, v, w):
-        w_left  = (v - w * self.wheel_separation / 2.0) / self.wheel_radius
+        w_left = (v - w * self.wheel_separation / 2.0) / self.wheel_radius
         w_right = (v + w * self.wheel_separation / 2.0) / self.wheel_radius
 
-        rpm_left  = w_left  * 60.0 / (2.0 * math.pi)
+        rpm_left = w_left * 60.0 / (2.0 * math.pi)
         rpm_right = w_right * 60.0 / (2.0 * math.pi)
 
-        rpm_left  *= self.gear_ratio
+        rpm_left *= self.gear_ratio
         rpm_right *= self.gear_ratio
 
         if self.invert_right:
             rpm_right = -rpm_right
 
-        rpm_left  = max(min(rpm_left,  self.rpm_max), -self.rpm_max)
+        rpm_left = max(min(rpm_left, self.rpm_max), -self.rpm_max)
         rpm_right = max(min(rpm_right, self.rpm_max), -self.rpm_max)
 
         return rpm_left, rpm_right
 
-    def cmd_vel_callback(self, msg: Twist):
+    def cmd_vel_callback(self, msg):
         with self._cmd_lock:
             self._last_v = msg.linear.x
             self._last_w = msg.angular.z
@@ -211,29 +198,23 @@ class WheelVelNode(Node):
         rpm_left, rpm_right = self.ms_to_rpm(v, w)
 
         try:
-            out = f"{int(rpm_left)},{int(rpm_right)}\r\n"
-            self.ser.write(out.encode("ascii"))
+            self.ser.write(f"{int(rpm_left)},{int(rpm_right)}\r\n".encode())
         except Exception:
             pass
 
 
 def main(args=None):
     rclpy.init(args=args)
-    node = None
+    node = WheelVelNode()
     try:
-        node = WheelVelNode()
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
     finally:
-        if node is not None:
-            node._running = False
-            time.sleep(0.1)
-            try:
-                node.ser.close()
-            except Exception:
-                pass
-            node.destroy_node()
+        node._running = False
+        time.sleep(0.1)
+        node.ser.close()
+        node.destroy_node()
         rclpy.shutdown()
 
 

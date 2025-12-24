@@ -67,6 +67,6 @@ def generate_launch_description():
     return LaunchDescription([
         rviz_arg,
         robot_state_pub,
-        ekf_odom,
+        #ekf_odom,
         #rviz,
     ])

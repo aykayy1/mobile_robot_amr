@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Imu
@@ -35,15 +36,20 @@ def build_read_request(slave: int, start_addr: int, count: int) -> bytes:
 def parse_modbus_response(resp: bytes):
     if len(resp) < 5:
         return None
+
     payload, crc = resp[:-2], resp[-2:]
     if modbus_crc(payload) != crc:
         return None
+
     if payload[1] != 0x03:
         return None
+
     byte_count = payload[2]
     data = payload[3:3 + byte_count]
+
     if len(data) != byte_count:
         return None
+
     return data
 
 
@@ -63,24 +69,10 @@ class HWT901BModbusNode(Node):
 
         self.declare_parameter('port', '/dev/ttyUSB1')
         self.declare_parameter('baud', 115200)
-        self.declare_parameter('slave_id', 0x51)   # theo datasheet
+        self.declare_parameter('slave_id', 0x51)  # theo datasheet
         self.declare_parameter('poll_hz', 50.0)
         self.declare_parameter('acc_scale_g', 16.0)
         self.declare_parameter('gyro_scale_dps', 2000.0)
-
-        # ---- Covariance params (focus yaw + gyro z) ----
-        # yaw_var: rad^2 (yaw trong orientation_covariance[8])
-        # gyro_z_var: (rad/s)^2 (wz trong angular_velocity_covariance[8])
-        #
-        # Giá trị khởi đầu an toàn:
-        # - yaw_var 0.07  ~ sigma 15deg  (tin yaw vừa phải, tránh drift kéo EKF)
-        # - gyro_z_var 4e-4 ~ sigma 0.02 rad/s
-        self.declare_parameter('yaw_var', 0.07)
-        self.declare_parameter('gyro_z_var', 4e-4)
-
-        # “vừa phải” cho các trục không fuse (không phải 10000)
-        self.declare_parameter('orient_rp_var', 1.0)   # roll/pitch rad^2
-        self.declare_parameter('gyro_xy_var', 1.0)     # (rad/s)^2
 
         port = self.get_parameter('port').value
         baud = int(self.get_parameter('baud').value)
@@ -91,22 +83,16 @@ class HWT901BModbusNode(Node):
 
         self.frame_id = 'imu_link'
 
-        # cov values
-        self.yaw_var = float(self.get_parameter('yaw_var').value)
-        self.gyro_z_var = float(self.get_parameter('gyro_z_var').value)
-        self.orient_rp_var = float(self.get_parameter('orient_rp_var').value)
-        self.gyro_xy_var = float(self.get_parameter('gyro_xy_var').value)
-
         self.get_logger().info(
-            f"HWT901B-485 Modbus node init: {port}@{baud} slave=0x{self.slave:02X} "
-            f"poll={self.poll_hz:.1f} Hz | yaw_var={self.yaw_var} gyro_z_var={self.gyro_z_var}"
+            f"HWT901B-485 Modbus node init: {port}@{baud} "
+            f"slave=0x{self.slave:02X} poll={self.poll_hz:.1f} Hz"
         )
 
         try:
             self.ser = serial.Serial(
                 port=port,
                 baudrate=baud,
-                timeout=0.02,          # timeout ngắn
+                timeout=0.02,
                 bytesize=serial.EIGHTBITS,
                 parity=serial.PARITY_NONE,
                 stopbits=serial.STOPBITS_ONE,
@@ -134,6 +120,8 @@ class HWT901BModbusNode(Node):
         self.addr_all = 0x0034
         self.count_all = 12
         self.req_all = build_read_request(self.slave, self.addr_all, self.count_all)
+
+        # slave(1)+func(1)+byte_count(1)+2N+crc(2)
         self.expected_len = 5 + 2 * self.count_all
 
         period = 1.0 / max(1.0, self.poll_hz)
@@ -168,7 +156,9 @@ class HWT901BModbusNode(Node):
                 pass
 
         if resp:
-            self.get_logger().debug(f"Req: {req.hex()} | Resp({len(resp)}B): {resp.hex()}")
+            self.get_logger().debug(
+                f"Req: {req.hex()} | Resp({len(resp)}B): {resp.hex()}"
+            )
         else:
             self.get_logger().debug(f"Req: {req.hex()} | Resp: <empty>")
 
@@ -188,20 +178,17 @@ class HWT901BModbusNode(Node):
         gx_raw, gy_raw, gz_raw = vals[3], vals[4], vals[5]
         roll_raw, pitch_raw, yaw_raw = vals[9], vals[10], vals[11]
 
-        # Acc
         g = 9.80665
         acc_scale = (self.acc_scale_g * g) / 32768.0
         ax = ax_raw * acc_scale
         ay = ay_raw * acc_scale
         az = az_raw * acc_scale
 
-        # Gyro -> rad/s
         gyro_scale = (self.gyro_scale_dps * math.pi / 180.0) / 32768.0
         gx = gx_raw * gyro_scale
         gy = gy_raw * gyro_scale
         gz = gz_raw * gyro_scale
 
-        # Angle -> rad
         roll = roll_raw / 32768.0 * math.pi
         pitch = pitch_raw / 32768.0 * math.pi
         yaw = yaw_raw / 32768.0 * math.pi
@@ -225,28 +212,6 @@ class HWT901BModbusNode(Node):
         msg.orientation.z = qz
         msg.orientation.w = qw
 
-        # ===== Covariances (no huge numbers) =====
-        # orientation covariance: roll, pitch set "large enough", yaw set yaw_var
-        msg.orientation_covariance = [
-            self.orient_rp_var, 0.0, 0.0,
-            0.0, self.orient_rp_var, 0.0,
-            0.0, 0.0, self.yaw_var
-        ]
-
-        # angular velocity covariance: wx/wy "large enough", wz set gyro_z_var
-        msg.angular_velocity_covariance = [
-            self.gyro_xy_var, 0.0, 0.0,
-            0.0, self.gyro_xy_var, 0.0,
-            0.0, 0.0, self.gyro_z_var
-        ]
-
-        # accel covariance: not used in your EKF now
-        msg.linear_acceleration_covariance = [
-            -1.0, 0.0, 0.0,
-             0.0, 0.0, 0.0,
-             0.0, 0.0, 0.0
-        ]
-
         self.pub.publish(msg)
 
     @staticmethod
@@ -257,20 +222,24 @@ class HWT901BModbusNode(Node):
         sp = math.sin(pitch * 0.5)
         cr = math.cos(roll * 0.5)
         sr = math.sin(roll * 0.5)
+
         qx = sr * cp * cy - cr * sp * sy
         qy = cr * sp * cy + sr * cp * sy
         qz = cr * cp * sy - sr * sp * cy
         qw = cr * cp * cy + sr * sp * sy
-        return (qx, qy, qz, qw)
+
+        return qx, qy, qz, qw
 
 
 def main(args=None):
     rclpy.init(args=args)
     node = HWT901BModbusNode()
+
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
+
     node.destroy_node()
     rclpy.shutdown()
 

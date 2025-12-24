@@ -31,12 +31,12 @@ class WheelVelNode(Node):
 
         # ===== Tham số ROS2 (có thể set bằng ros2 param set) =====
         self.declare_parameter('port', '/dev/ttyACM0')      # Port UART từ STM32
-        self.declare_parameter('baud', 38400)               # Baudrate
+        self.declare_parameter('baud', 115200)               # Baudrate
         self.declare_parameter('wheel_radius', 0.1)         # [m]
         self.declare_parameter('wheel_separation', 0.636)   # [m]
         self.declare_parameter('gear_ratio', 10.0)           # nếu rpm là rpm bánh thì = 1.0
-        self.declare_parameter('base_rpm', 90.0)
-        self.declare_parameter('base_rpm_rota', 20.0)               # rpm cơ bản khi nhấn phím
+        self.declare_parameter('base_rpm', 250.0)
+        self.declare_parameter('base_rpm_rota', 40.0)               # rpm cơ bản khi nhấn phím
 
         port = self.get_parameter('port').get_parameter_value().string_value
         baud = self.get_parameter('baud').get_parameter_value().integer_value
@@ -168,19 +168,19 @@ class WheelVelNode(Node):
                 if key == "w":
                     # đi thẳng tới
                     rpm_left = +self.base_rpm
-                    rpm_right = -self.base_rpm
+                    rpm_right = +self.base_rpm
                 elif key == "s":
                     # đi lùi
                     rpm_left = -self.base_rpm
-                    rpm_right = +self.base_rpm
+                    rpm_right = -self.base_rpm
                 elif key == "a":
                     # quay trái tại chỗ
                     rpm_left = -self.base_rpm_rota
-                    rpm_right = -self.base_rpm_rota
+                    rpm_right = +self.base_rpm_rota
                 elif key == "d":
                     # quay phải tại chỗ
                     rpm_left = +self.base_rpm_rota
-                    rpm_right = +self.base_rpm_rota
+                    rpm_right = -self.base_rpm_rota
                 elif key == "x":
                     # dừng
                     rpm_left = 0.0

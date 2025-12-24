@@ -113,6 +113,24 @@ class HWT901BModbusNode(Node):
                 "rs485_mode not available, using manual RTS toggle if needed."
             )
 
+        # --------- Covariance (use Witmotion default set you provided) ---------
+        self.imu_linear_acceleration_covariance = [
+            0.0364, 0.0,    0.0,
+            0.0,    0.0048, 0.0,
+            0.0,    0.0,    0.0796
+        ]
+        self.imu_angular_velocity_covariance = [
+            0.0663, 0.0,    0.0,
+            0.0,    0.1453, 0.0,
+            0.0,    0.0,    0.0378
+        ]
+        self.imu_orientation_covariance = [
+            0.0479, 0.0,    0.0,
+            0.0,    0.0207, 0.0,
+            0.0,    0.0,    0.0041
+        ]
+        # --------------------------------------------------------------------
+
         # Publisher
         self.pub = self.create_publisher(Imu, 'imu', 100)
 
@@ -211,6 +229,12 @@ class HWT901BModbusNode(Node):
         msg.orientation.y = qy
         msg.orientation.z = qz
         msg.orientation.w = qw
+
+        # --------- Set covariance exactly like your witmotion_node params ---------
+        msg.linear_acceleration_covariance = self.imu_linear_acceleration_covariance
+        msg.angular_velocity_covariance = self.imu_angular_velocity_covariance
+        msg.orientation_covariance = self.imu_orientation_covariance
+        # ----------------------------------------------------------------------------
 
         self.pub.publish(msg)
 

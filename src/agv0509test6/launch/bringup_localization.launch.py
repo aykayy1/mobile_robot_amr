@@ -56,7 +56,7 @@ def generate_launch_description():
             'inverted': 'false',
             'angle_compensate': 'true',
             # nếu driver hỗ trợ thì bật để giảm lệch time:
-            # 'use_system_time': 'true',
+            'use_system_time': 'true',
         }.items()
     )
 
@@ -169,7 +169,7 @@ def generate_launch_description():
         output='screen',
         parameters=[LaunchConfiguration('amcl_params'), {'use_sim_time': False}],
         # nếu muốn AMCL dùng scan_filtered thì mở:
-        # remappings=[('scan', '/scan_filtered')]
+        remappings=[('scan', '/scan_filtered')]
     )
 
     lifecycle_manager = Node(

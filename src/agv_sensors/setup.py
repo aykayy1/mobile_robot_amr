@@ -46,6 +46,8 @@ setup(
             'hwt901b_imu = agv_sensors.hwt901b_imu:main',
             
             'khoa = agv_sensors.khoa:main',
+            
+            'evaluation_straight10m = agv_sensors.evaluation_straight10m:main',
             # Nếu SAU NÀY em có file agv_sensors/lidar_node.py thì bật lại dòng này
             # 'lidar_node = agv_sensors.lidar_node:main',
             
