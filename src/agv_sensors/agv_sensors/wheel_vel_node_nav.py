@@ -22,7 +22,7 @@ class WheelVelNode(Node):
         self.declare_parameter('wheel_radius', 0.1)
         self.declare_parameter('wheel_separation', 0.636)
         self.declare_parameter('gear_ratio', 10.0)
-        self.declare_parameter('rpm_max', 200.0)
+        self.declare_parameter('rpm_max', 800)
 
         self.declare_parameter('cmd_vel_topic', '/cmd_vel')
         self.declare_parameter('invert_right_wheel', False)

@@ -14,7 +14,7 @@ def generate_launch_description():
     nav2_params_file = LaunchConfiguration('params_file')
     declare_params_file = DeclareLaunchArgument(
         'params_file',
-        default_value='/home/hcmute/AMR/mobile_robot_amr/src/agv0509test6/config/nav2_params_clean.yaml',
+        default_value='/home/hcmute/AMR/mobile_robot_amr/src/agv0509test6/config/nav2_params.yaml',
         description='Full path to the ROS2 parameters file to use for all launched nodes'
     )
 

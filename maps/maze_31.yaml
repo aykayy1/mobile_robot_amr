@@ -1,7 +1,7 @@
-image: /home/hcmute/AMR/mobile_robot_amr/maps/maze_31.pgm
+image: /home/hcmute/AMR/mobile_robot_amr/maps/maze_31_fix.pgm
 resolution: 0.050000
 #origin: [-13.054413, -75.387305, 0.000000]
-origin: [-14.0, -14.0, -1.5708]  #-1.5708
+origin: [-14.0, -14.0, 0.0]  #-1.5708
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.196
