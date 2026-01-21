@@ -83,3 +83,15 @@ Thư mục agv0509test6 chứa các file test cũ, không sử dụng cho quy tr
 Tác giả: [Trần Anh Khoa - Lê Đức Mạnh]
 
 Email: [trankhoavt85@gmail.com]
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=97mRKKiSMAY">
+    <img src="http://img.youtube.com/vi/97mRKKiSMAY/0.jpg" width="500" alt="Demo Mobile Robot">
+  </a>
+</div>
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=Di32CT20gGQ">
+    <img src="http://img.youtube.com/vi/Di32CT20gGQ/0.jpg" width="500" alt="Demo 2 _ ROS 2-Based Autonomous Mobile Robots (AMRs)">
+  </a>
+</div>
