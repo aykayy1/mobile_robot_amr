@@ -34,7 +34,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>100 100</size>
+              <size>500 500</size>
             </plane>
           </geometry>
         </collision>
@@ -42,7 +42,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>100 100</size>
+              <size>500 500</size>
             </plane>
           </geometry>
           <material>
@@ -68,46 +68,50 @@
       <shadows>false</shadows>
     </scene>
 
+
+
+
+
     <!-- Hai bức tường -->
     <model name="wall_left">
       <static>true</static>
-      <pose>6.0 1.2 1.0 0 0 0</pose>
+      <pose>31 12 0 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>10.0 0.2 2.0</size>
+              <size>60.0 0.3 2.0</size>
             </box>
           </geometry>
-        </collision>
+        </collision>  
         <visual name="visual">
           <geometry>
             <box>
-              <size>10.0 0.2 2.0</size>
+              <size>60.0 0.3 2.0</size>
             </box>
           </geometry>
           <material>
             <diffuse>0.7 0.7 0.7 1</diffuse>
-          </material>
+          </material>   
         </visual>
-      </link>
+      </link> 
     </model>
 
     <model name="wall_right">
       <static>true</static>
-      <pose>6.0 -1.2 1.0 0 0 0</pose>
+      <pose>31 1 0 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>10.0 0.2 2.0</size>
+              <size>60.0 0.3 2.0</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>10.0 0.2 2.0</size>
+              <size>60.0 0.3 2.0</size>
             </box>
           </geometry>
           <material>
@@ -115,12 +119,3518 @@
           </material>
         </visual>
       </link>
-    </model>
+      </model>
+
+
+<model name="wall_start_under">
+  <static>true</static>
+  <pose>61 6.5 0 0 0 0</pose>  <!-- Bức tường đầu bên phải tại X = 60.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.2 11 2.0</size>  <!-- Kích thước bức tường: Dài 60m, Rộng 0.2m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.2 11 2.0</size>  <!-- Kích thước bức tường: Dài 60m, Rộng 0.2m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho bức tường -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="wall_start_on">
+  <static>true</static>
+  <pose>1 6.5 0 0 0 0</pose>  
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.2 11 2.0</size>  
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.2 11 2.0</size>  
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho bức tường -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<!-- column left -->
+<model name="column_large_left_1">
+  <static>true</static>
+  <pose>1 12 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_small_left_2">
+  <static>true</static>
+  <pose>6.3 12 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m --> 
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="column_large_left_3">
+  <static>true</static>
+  <pose>11.55 12 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_small_left_4">
+  <static>true</static>
+  <pose>16.35 12 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="column_large_left_5">
+  <static>true</static>
+  <pose>21.6 12 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="column_small_left_6">
+  <static>true</static>
+  <pose>26.4 12 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>_right
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="column_large_left_7">
+  <static>true</static>
+  <pose>30.35 12 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_small_left_8">
+  <static>true</static>
+  <pose>35.15 12 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_large_left_9">
+  <static>true</static>
+  <pose>40.4 12 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="column_small_left_10">
+  <static>true</static>
+  <pose>45.2 12 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="column_large_left_11">
+  <static>true</static>
+  <pose>50.45 12 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_small_left_12">
+  <static>true</static>
+  <pose>55.2 12 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_large_left_13">
+  <static>true</static>
+  <pose>61 12 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<!-- column right  -->
+<model name="column_large_right_1">
+  <static>true</static>
+  <pose>1 1 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_small_right_2">
+  <static>true</static>
+  <pose>6.3 1 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="column_large_right_3">
+  <static>true</static>
+  <pose>11.55 1 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_small_right_4">
+  <static>true</static>
+  <pose>16.35 1 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="column_large_right_5">
+  <static>true</static>
+  <pose>21.6 1 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="column_small_right_6">
+  <static>true</static>
+  <pose>26.4 1 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="column_large_right_7">
+  <static>true</static>
+  <pose>30.35 1 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_small_right_8">
+  <static>true</static>
+  <pose>35.15 1 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_large_right_9">
+  <static>true</static>
+  <pose>40.7 1 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="column_small_right_10">
+  <static>true</static>
+  <pose>45.2 1 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="column_large_right_11">
+  <static>true</static>
+  <pose>50.45 1 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_small_right_12">
+  <static>true</static>
+  <pose>55.2 1 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="column_large_right_13">
+  <static>true</static>
+  <pose>61 1 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<!-- banister left-->
+<model name="ban_large_left_1">
+  <static>true</static>
+  <pose>1 14.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_small_left_2">
+  <static>true</static>
+  <pose>6.3 14.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="ban_large_left_3">
+  <static>true</static>
+  <pose>11.55 14.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_small_left_4">
+  <static>true</static>
+  <pose>15.53 14.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_large_left_5">
+  <static>true</static>
+  <pose>21.6 14.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="ban_small_left_6">
+  <static>true</static>
+  <pose>26.4 14.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="ban_large_left_7">
+  <static>true</static>
+  <pose>30.35 14.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_small_left_8">
+  <static>true</static>
+  <pose>35.15 14.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_large_left_9">
+  <static>true</static>
+  <pose>40.4 14.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="ban_small_left_10">
+  <static>true</static>
+  <pose>45.2 14.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="ban_large_left_11">
+  <static>true</static>
+  <pose>50.45 14.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_small_left_12">
+  <static>true</static>
+  <pose>55.2 14.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_large_left_13">
+  <static>true</static>
+  <pose>61 14.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<!-- banister right -->
+<model name="ban_large_right_1">
+  <static>true</static>
+  <pose>1 -1.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_small_right_2">
+  <static>true</static>
+  <pose>6.3 -1.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="ban_large_right_3">
+  <static>true</static>
+  <pose>11.55 -1.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_small_right_4">
+  <static>true</static>
+  <pose>16.35 -1.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="ban_large_right_5">
+  <static>true</static>
+  <pose>21.6 -1.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="ban_small_right_6">
+  <static>true</static>
+  <pose>26.4 -1.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="ban_large_right_7">
+  <static>true</static>
+  <pose>30.35 -1.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_small_right_8">
+  <static>true</static>
+  <pose>35.15 -1.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_large_right_9">
+  <static>true</static>
+  <pose>40.4 -1.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="ban_small_right_10">
+  <static>true</static>
+  <pose>45.2 -1.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="ban_large_right_11">
+  <static>true</static>
+  <pose>50.45 -1.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_small_right_12">
+  <static>true</static>
+  <pose>55.2 -1.2 0 0 0 0</pose>  <!-- Cột nhỏ tại X = 4.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.3 0.75 2.0</size>  <!-- Kích thước cột nhỏ: Dài 0.3m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="ban_large_right_13">
+  <static>true</static>
+  <pose>61 -1.2 0 0 0 0</pose>  <!-- Cột lớn tại X = 0, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước cột lớn: Dài 0.75m, Rộng 0.2m, Cao 0.2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho cột lớn -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<!-- bar left  -->
+<model name="bar_left_1">
+  <static>true</static>
+  <pose>2 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_left_2">
+  <static>true</static>
+  <pose>3.5 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_left_3">
+  <static>true</static>
+  <pose>5 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_left_4">
+  <static>true</static>
+  <pose>6.8 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_5">
+  <static>true</static>
+  <pose>8.3 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_6">
+  <static>true</static>
+  <pose>9.8 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_7">
+  <static>true</static>
+  <pose>12 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_8">
+  <static>true</static>
+  <pose>13.5 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_9">
+  <static>true</static>
+  <pose>15 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_10">
+  <static>true</static>
+  <pose>16.8 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_11">
+  <static>true</static>
+  <pose>18.3 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_12">
+  <static>true</static>
+  <pose>19.8 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_left_13">
+  <static>true</static>
+  <pose>22 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_14">
+  <static>true</static>
+  <pose>23.5 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_15">
+  <static>true</static>
+  <pose>25 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_16">
+  <static>true</static>
+  <pose>26.8 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_17">
+  <static>true</static>
+  <pose>28.3 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_18">
+  <static>true</static>
+  <pose>29.8 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_19">
+  <static>true</static>
+  <pose>31.7 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_20">
+  <static>true</static>
+  <pose>33.2 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_left_21">
+  <static>true</static>
+  <pose>34.7 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_left_22">
+  <static>true</static>
+  <pose>36.55 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_23">
+  <static>true</static>
+  <pose>38.05 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_24">
+  <static>true</static>
+  <pose>39.55 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_25">
+  <static>true</static>
+  <pose>42.55 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_26">
+  <static>true</static>
+  <pose>44.05 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_27">
+  <static>true</static>
+  <pose>45.55 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_28">
+  <static>true</static>
+  <pose>47.35 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_29">
+  <static>true</static>
+  <pose>48.85 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_30">
+  <static>true</static>
+  <pose>50.25 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_31">
+  <static>true</static>
+  <pose>52.35 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_32">
+  <static>true</static>
+  <pose>53.85 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_33">
+  <static>true</static>
+  <pose>55.35 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_34">
+  <static>true</static>
+  <pose>57.35 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_35">
+  <static>true</static>
+  <pose>58.85 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_36">
+  <static>true</static>
+  <pose>60.35 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+
+<!--2 thanh bar ngoài cùng nối 2 tường -->
+<model name="bar_left_37">  
+  <static>true</static>
+  <pose>62.2 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_38">
+  <static>true</static>
+  <pose>-0.2 14.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+
+
+<!--bar right -->
+<model name="bar_right_1">
+  <static>true</static>
+  <pose>2 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_right_2">
+  <static>true</static>
+  <pose>3.5 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_right_3">
+  <static>true</static>
+  <pose>5 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_right_4">
+  <static>true</static>
+  <pose>6.8 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_5">
+  <static>true</static>
+  <pose>8.3 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_6">
+  <static>true</static>
+  <pose>9.8 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_7">
+  <static>true</static>
+  <pose>12 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_8">
+  <static>true</static>
+  <pose>13.5 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_9">
+  <static>true</static>
+  <pose>15 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_10">
+  <static>true</static>
+  <pose>16.8 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_11">
+  <static>true</static>
+  <pose>18.3 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_12">
+  <static>true</static>
+  <pose>19.8 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_right_13">
+  <static>true</static>
+  <pose>22 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_14">
+  <static>true</static>
+  <pose>23.5 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_15">
+  <static>true</static>
+  <pose>25 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_16">
+  <static>true</static>
+  <pose>26.8 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_17">
+  <static>true</static>
+  <pose>28.3 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_18">
+  <static>true</static>
+  <pose>29.8 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_19">
+  <static>true</static>
+  <pose>31.7 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_20">
+  <static>true</static>
+  <pose>33.2 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_right_21">
+  <static>true</static>
+  <pose>34.7 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_right_22">
+  <static>true</static>
+  <pose>36.55 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_23">
+  <static>true</static>
+  <pose>38.05 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_24">
+  <static>true</static>
+  <pose>39.55 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_25">
+  <static>true</static>
+  <pose>42.55 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_26">
+  <static>true</static>
+  <pose>44.05 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_27">
+  <static>true</static>
+  <pose>45.55 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_28">
+  <static>true</static>
+  <pose>47.35 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_29">
+  <static>true</static>
+  <pose>48.85 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_30">
+  <static>true</static>
+  <pose>50.25 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_31">
+  <static>true</static>
+  <pose>52.35 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_32">
+  <static>true</static>
+  <pose>53.85 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_33">
+  <static>true</static>
+  <pose>55.35 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_34">
+  <static>true</static>
+  <pose>57.35 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_35">
+  <static>true</static>
+  <pose>58.85 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_36">
+  <static>true</static>
+  <pose>60.35 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<!--2 thanh bar ngoài cùng nối 2 tường -->
+
+
+<model name="bar_right_37">  <!--2 thanh bar ngoài cùng nối 2 tường -->
+  <static>true</static>
+  <pose>62.2 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_right_38">
+  <static>true</static>
+  <pose>-0.2 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<!-- 2 bức tường đối diện -->
+
+    <!-- Hai bức tường -->
+    <model name="wall_start_under_opposite">
+  <static>true</static>
+  <pose>-1.2 10.7 0 0 0 0</pose>  <!-- Bức tường đầu bên phải tại X = 60.2m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.2 6.5 2.0</size>  <!-- Kích thước bức tường: Dài 60m, Rộng 0.2m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.2 6.5 2.0</size>  <!-- Kích thước bức tường: Dài 60m, Rộng 0.2m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho bức tường -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="wall_start_on_opposite">
+  <static>true</static>
+  <pose>63.2 6.5 0 0 0 0</pose>  
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.2 15.4 2.0</size>  
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.2 15.4 2.0</size>  
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho bức tường -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="wall_1">
+  <static>true</static>
+  <pose>-2.9 7.6 0 0 0 0</pose>  
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>3.6 0.3 2.0</size>  
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>3.6 0.3 2.0</size>  
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho bức tường -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="wall_2">
+  <static>true</static>
+  <pose>-4 6 0 0 0 0</pose>  
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>1.5 0.3 2.0</size>  
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>1.5 0.3 2.0</size>  
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho bức tường -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="wall_3"> <!-- cau thang -->
+  <static>true</static>
+  <pose>-3.2 4.3 0 0 0 0</pose>  
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.2 3.7 2.0</size>  
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.2 3.7 2.0</size>  
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho bức tường -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="wall_4">
+  <static>true</static>
+  <pose>-4 2.6 0 0 0 0</pose>  
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>1.5 0.3 2.0</size>  
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>1.5 0.3 2.0</size>  
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho bức tường -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="wall_left_1">
+  <static>true</static>
+  <pose>-4.7 6.8 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.05 0.5 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.05 0.5 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+
+
+
+<model name="wall_left_3">
+  <static>true</static>
+  <pose>-4.7 0.6 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.05 4 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.05 4 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+
+<model name="wall_left_4">
+  <static>true</static>
+  <pose>-4 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="wall_left_5">
+  <static>true</static>
+  <pose>-3 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.45 0.75 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+
+<model name="bar_left_39">  
+  <static>true</static>
+  <pose>-1.5 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.7 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
+<model name="bar_left_40">  
+  <static>true</static>
+  <pose>2.95 -1.2 0 0 0 0</pose>  <!-- Thanh nhỏ giữa cột 1 và cột 2 tại X = 2.1m, Y = 5.5m, Z = 1m -->
+  <link name="link">
+    <collision name="collision">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <geometry>
+        <box>
+          <size>0.5 0.05 2.0</size>  <!-- Kích thước thanh nhỏ: Dài 1m, Rộng 0.05m, Cao 2m -->
+        </box>
+      </geometry>
+      <material>
+        <diffuse>0.7 0.7 0.7 1</diffuse>  <!-- Màu xám cho thanh nhỏ -->
+      </material>
+    </visual>
+  </link>
+</model>
+
 
     <!-- Marker vị trí spawn -->
     <model name="start_marker">
       <static>true</static>
-      <pose>0 0 0.01 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <link name="link">
         <visual name="visual">
           <geometry>
@@ -138,3 +3648,13 @@
 
   </world>
 </sdf>
+
+
+
+
+<plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">
+  <laser_topic>/scan</laser_topic>
+  <frame_name>laser_frame</frame_name>
+  <topic>/scan</topic>
+  <robotNamespace></robotNamespace>
+</plugin>
