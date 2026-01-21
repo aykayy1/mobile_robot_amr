@@ -17,7 +17,7 @@ Dự án được tổ chức thành các module chức năng chính:
 * ROS 2 Humble Hawksbill
 
 ### 2. Tải và Build
-```bash
+```bash```
 # 1. Tạo workspace
 mkdir -p ~/amr_ws/src
 cd ~/amr_ws/src
@@ -42,7 +42,7 @@ Sử dụng module trong thư mục slam để quét và xây dựng bản đồ
 
 Khởi động SLAM:
 
-```bash
+```bash```
 # Chạy file launch trong thư mục slam (thay tên file .py nếu khác)
 ros2 launch amr_slam agv_runall.py
 (Lệnh này sẽ khởi động Lidar và thuật toán SLAM Toolbox/Cartographer).
@@ -53,7 +53,7 @@ ros2 run amr_slam wheel_vel_node
 
 Lưu bản đồ (Sau khi quét xong):
 
-```bash
+```bash```
 ros2 run nav2_map_server map_saver_cli -f ~/amr_ws/src/mobile_robot_amr/navigation/maps/my_map
 
 📍 Giai đoạn 2: Dẫn đường (Navigation)
@@ -61,7 +61,7 @@ Sử dụng module trong thư mục navigation để robot tự chạy trên b�
 
 Khởi động Navigation:
 
-```bash
+```bash```
 # Chạy file launch trong thư mục navigation (thay tên file .py nếu khác)
 ros2 launch amr_navigation bringup_localization.launch.py
 ros2 launch amr_navigation navigation_real_launch.py
