@@ -2,7 +2,7 @@ from setuptools import setup
 from glob import glob
 import os
 
-package_name = 'agv_navigation'
+package_name = 'amr_sensors'
 
 setup(
     name=package_name,
@@ -32,10 +32,22 @@ setup(
     entry_points={
         'console_scripts': [
             # Node đọc IMU W901C-RS232
+            'imu_node = amr_sensors.imu_node:main',
 
-            'wheel_vel_node_nav = agv_sensors.wheel_vel_node_nav:main',
+            # Node đọc wheel velocity / odom
+            'wheel_vel_node = amr_sensors.wheel_vel_node:main',
+
+            'cmd_vel_to_uart = amr_sensors.cmd_vel_to_uart:main',
             
+            'wheel_vel_from_stm32 = amr_sensors.wheel_vel_from_stm32:main',
 
+            'wheel_vel_node_nav = amr_sensors.wheel_vel_node_nav:main',
+            
+            'hwt901b_imu = amr_sensors.hwt901b_imu:main',
+            
+            'imu_hwt901b = amr_sensors.imu_hwt901b:main',
+            
+            'evaluation_straight10m = amr_sensors.evaluation_straight10m:main',
             # Nếu SAU NÀY em có file agv_sensors/lidar_node.py thì bật lại dòng này
             # 'lidar_node = agv_sensors.lidar_node:main',
             

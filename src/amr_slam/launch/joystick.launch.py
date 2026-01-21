@@ -8,7 +8,7 @@ def generate_launch_description():
 
     # File cấu hình joystick
     joy_params = os.path.join(
-        get_package_share_directory('agv_slam'),
+        get_package_share_directory('amr_slam'),
         'config',
         'joystick.yaml'
     )
@@ -46,7 +46,7 @@ def generate_launch_description():
     )
 
     wheel_node = Node(
-            package='agv_sensors',
+            package='amr_sensors',
             executable='wheel_vel_from_stm32',
             name='wheel_vel_from_stm32',
             output='screen',

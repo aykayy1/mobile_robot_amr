@@ -178,7 +178,7 @@ def generate_launch_description():
     # 5) SLAM TOOLBOX - CHẠY SAU 13 GIÂY
     # =========================================================
     slam_params = os.path.join(
-        get_package_share_directory('agv_slam'),
+        get_package_share_directory('amr_slam'),
         'config',
         'slam_toolbox_params.yaml'
     )

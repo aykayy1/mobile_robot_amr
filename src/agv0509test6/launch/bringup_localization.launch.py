@@ -80,8 +80,8 @@ def generate_launch_description():
     )
 
     imu_node = Node(
-        package='agv_sensors',
-        executable='khoa',
+        package='amr_sensors',
+        executable='imu_hwt901b',
         name='hwt901b_modbus',
         output='screen',
         parameters=[{
