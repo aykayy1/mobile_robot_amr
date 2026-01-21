@@ -2,7 +2,7 @@ from setuptools import setup
 from glob import glob
 import os
 
-package_name = 'agv_sensors'
+package_name = 'agv_slam'
 
 setup(
     name=package_name,
@@ -31,25 +31,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            # Node đọc IMU W901C-RS232
-            'imu_node = agv_sensors.imu_node:main',
 
             # Node đọc wheel velocity / odom
             'wheel_vel_node = agv_sensors.wheel_vel_node:main',
 
-            'cmd_vel_to_uart = agv_sensors.cmd_vel_to_uart:main',
-            
-            'wheel_vel_from_stm32 = agv_sensors.wheel_vel_from_stm32:main',
-
-            'wheel_vel_node_nav = agv_sensors.wheel_vel_node_nav:main',
-            
-            'hwt901b_imu = agv_sensors.hwt901b_imu:main',
-            
-            'imu_hwt901b = agv_sensors.imu_hwt901b:main',
-            
-            'evaluation_straight10m = agv_sensors.evaluation_straight10m:main',
-            # Nếu SAU NÀY em có file agv_sensors/lidar_node.py thì bật lại dòng này
-            # 'lidar_node = agv_sensors.lidar_node:main',
             
 
         ],
