@@ -2,7 +2,7 @@ from setuptools import setup
 from glob import glob
 import os
 
-package_name = 'agv_slam'
+package_name = 'amr_slam'
 
 setup(
     name=package_name,
@@ -33,7 +33,7 @@ setup(
         'console_scripts': [
 
             # Node đọc wheel velocity / odom
-            'wheel_vel_node = agv_sensors.wheel_vel_node:main',
+            'wheel_vel_node = amr_slam.wheel_vel_node:main',
 
             
 
