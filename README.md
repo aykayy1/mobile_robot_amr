@@ -83,6 +83,7 @@ Thư mục agv0509test6 chứa các file test cũ, không sử dụng cho quy tr
 Tác giả: [Trần Anh Khoa - Lê Đức Mạnh]
 
 Email: [trankhoavt85@gmail.com]
+       [manh1472003@gmail.com]
 
 VIDEO DEMO 1:
 <div align="center">
