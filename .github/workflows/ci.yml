@@ -1,0 +1,23 @@
+name: ROS2 CI (Humble)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  build_test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Build & test ROS2 packages with colcon
+      - name: ROS 2 CI
+        uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          target-ros2-distro: humble
+          # Repo của bạn có workspace kiểu: <repo_root>/src/...
+          # action-ros-ci sẽ tự tạo workspace, rosdep install, colcon build/test.
+          # Nếu bạn muốn chỉ build vài package, có thể cấu hình thêm theo docs của action.
+          # (Giữ default cũng chạy được)
