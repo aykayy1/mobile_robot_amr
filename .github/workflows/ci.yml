@@ -1,0 +1,47 @@
+name: ROS2 CI (Humble)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      # 1) Lấy code từ repo về runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2) Cài ROS 2 Humble + setup apt sources
+      - name: Setup ROS 2
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: humble
+
+      # 3) Cài tool cần thiết (rosdep, colcon) + update rosdep database
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-rosdep python3-colcon-common-extensions
+          sudo rosdep init || true
+          rosdep update
+
+      # 4) Cài dependencies của các package trong src/ (dựa vào package.xml)
+      - name: Install dependencies (rosdep)
+        run: |
+          rosdep install --from-paths src --ignore-src -r -y
+
+      # 5) Build workspace
+      - name: Build (colcon)
+        run: |
+          source /opt/ros/humble/setup.bash
+          colcon build --symlink-install
+
+      # 6) Test (nếu có) - không bắt buộc
+      - name: Test (optional)
+        run: |
+          source /opt/ros/humble/setup.bash
+          colcon test || true
+          colcon test-result --verbose || true
