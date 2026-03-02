@@ -18,6 +18,8 @@ setup(
     (os.path.join('share', package_name, 'launch'),
      glob(os.path.join('launch', '*.py'))),
 
+    (os.path.join('share', package_name, 'maps'), glob(os.path.join('maps', '*'))),
+
     # nếu có thư mục config (scan_filter.yaml, v.v.)
     (os.path.join('share', package_name, 'config'),
      glob(os.path.join('config', '*'))),

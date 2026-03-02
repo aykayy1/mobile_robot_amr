@@ -12,9 +12,7 @@ def generate_launch_description():
     pkg = 'agv0509test6'
     pkg_share = get_package_share_directory(pkg)
 
-    # Duong dan den file slam
-    slam_params_file = '/home/anhkhoa/Mobile_robot/agv_ws/src/agv0509test6/config/slam_toolbox_params.yaml'
-
+    slam_params_file = os.path.join(pkg_share, 'config', 'slam_toolbox_params.yaml')
 
     
     # Goi launch cua slam_toolbox

@@ -23,16 +23,18 @@ def generate_launch_description():
     # =========================
     pkg_robot = 'agv0509test6'
     pkg_share = get_package_share_directory(pkg_robot)
-
     urdf_file = os.path.join(pkg_share, 'urdf', 'agv0509test6.urdf')
     with open(urdf_file, 'r') as f:
         robot_description = f.read()
+        
+    amr_share = get_package_share_directory('amr_navigation')   
 
     default_ekf  = os.path.join(pkg_share, 'config', 'ekf.yaml')
     default_amcl = os.path.join(pkg_share, 'config', 'amcl.yaml')
-    default_map  = '/home/hcmute/AMR/mobile_robot_amr/maps/my_map.yaml'
-    scan_filter_params = os.path.join(pkg_share, 'config', 'scan_filter.yaml')
 
+    default_map  = os.path.join(amr_share, 'maps', 'my_map.yaml')  # đổi dòng này
+
+    scan_filter_params = os.path.join(pkg_share, 'config', 'scan_filter.yaml')
     # =========================
     # 1) LIDAR (t = 0s)
     # =========================

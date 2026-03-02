@@ -11,12 +11,13 @@ def generate_launch_description():
     pkg_name = 'agv0509test6'
     pkg_share = get_package_share_directory(pkg_name)
 
-    nav2_params_file = LaunchConfiguration('params_file')
+    nav2_params_file = os.path.join(pkg_share, 'config', 'nav2_params_mppi.yaml')
+
     declare_params_file = DeclareLaunchArgument(
-        'params_file',
-        default_value='/home/hcmute/AMR/mobile_robot_amr/src/agv0509test6/config/nav2_params_mppi.yaml',
-        description='Full path to the ROS2 parameters file to use for all launched nodes'
-    )
+    'params_file',
+    default_value=nav2_params_file,
+    description='Full path to the ROS2 parameters file to use'
+)
 
     use_sim_time = LaunchConfiguration('use_sim_time')
     declare_use_sim_time = DeclareLaunchArgument('use_sim_time', default_value='False')

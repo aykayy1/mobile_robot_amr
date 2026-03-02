@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
@@ -8,15 +9,14 @@ from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-    pkg_name = 'agv0509test6'
+    pkg_name = 'amr_navigation'
     pkg_share = get_package_share_directory(pkg_name)
-
-    nav2_params_file = LaunchConfiguration('params_file')
+    nav2_params_file = os.path.join(pkg_share, 'config', 'nav2_params_mppi.yaml')
     declare_params_file = DeclareLaunchArgument(
-        'params_file',
-        default_value='/home/hcmute/AMR/mobile_robot_amr/src/agv_navigation/config/nav2_params_mppi.yaml',
-        description='Full path to the ROS2 parameters file to use for all launched nodes'
-    )
+    'params_file',
+    default_value=nav2_params_file,
+    description='Full path to the ROS2 parameters file to use'
+)
 
     use_sim_time = LaunchConfiguration('use_sim_time')
     declare_use_sim_time = DeclareLaunchArgument('use_sim_time', default_value='False')

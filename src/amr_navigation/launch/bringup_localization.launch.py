@@ -24,15 +24,16 @@ def generate_launch_description():
     pkg_robot = 'agv0509test6'
     pkg_share = get_package_share_directory(pkg_robot)
 
+    amr_share = get_package_share_directory('amr_navigation')
+
     urdf_file = os.path.join(pkg_share, 'urdf', 'agv0509test6.urdf')
     with open(urdf_file, 'r') as f:
         robot_description = f.read()
 
-    default_ekf  = os.path.join(pkg_share, 'config', 'ekf.yaml')
-    default_amcl = os.path.join(pkg_share, 'config', 'amcl.yaml')
-    default_map  = '/home/hcmute/AMR/mobile_robot_amr/maps/my_map.yaml'
+    default_ekf  = os.path.join(amr_share, 'config', 'ekf.yaml')
+    default_amcl = os.path.join(amr_share, 'config', 'amcl.yaml')
+    default_map  = os.path.join(amr_share, 'maps', 'my_map.yaml')
     scan_filter_params = os.path.join(pkg_share, 'config', 'scan_filter.yaml')
-
     # =========================
     # 1) LIDAR (t = 0s)
     # =========================
@@ -80,7 +81,7 @@ def generate_launch_description():
     )
 
     imu_node = Node(
-        package='agv_sensors',
+        package='amr_sensors',
         executable='imu_hwt901b',
         name='hwt901b_modbus',
         output='screen',
