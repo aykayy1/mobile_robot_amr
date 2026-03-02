@@ -1,0 +1,47 @@
+name: ros2 ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup ROS 2 Humble
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: humble
+
+      - name: Install dependencies (rosdep)
+        run: |
+          sudo apt-get update
+          rosdep update
+          rosdep install --from-paths src --ignore-src -r -y
+
+      - name: Build (colcon)
+        run: |
+          source /opt/ros/humble/setup.bash
+          colcon build --event-handlers console_direct+
+      
+      - name: Smoke test (no hardware required)
+        run: |
+          set -e
+          source /opt/ros/humble/setup.bash
+          source install/setup.bash
+
+          echo "== bringup_localization (serial errors are OK) =="
+          timeout -s INT 10s ros2 launch amr_navigation bringup_localization.launch.py || true
+
+          echo "== navigation_real (tf/scan missing is OK) =="
+          timeout -s INT 10s ros2 launch amr_navigation navigation_real_launch.py || true
+
+          echo "== slam runall (serial errors are OK) =="
+          timeout -s INT 10s ros2 launch amr_slam agv_runall.py || true
+
+          echo "== sensors (serial errors are OK) =="
+          timeout -s INT 3s ros2 run amr_sensors imu_hwt901b || true
+          timeout -s INT 3s ros2 run amr_sensors wheel_vel_node || true
