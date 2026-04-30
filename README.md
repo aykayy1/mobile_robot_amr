@@ -84,8 +84,8 @@ Ensure you have run source install/setup.bash in every new terminal window.
 
 👥 Contact
 Authors: 
-Trần Anh Khoa - [trankhoavt85@gmail.com]
-Lê Đức Mạnh   - [manh1472003@gmail.com]
+*   **Trần Anh Khoa** - [trankhoavt85@gmail.com].
+*   **Lê Đức Mạnh**   - [manh1472003@gmail.com].
 
 VIDEO DEMO 1:
 <div align="center">
