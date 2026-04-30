@@ -42,32 +42,33 @@ Sử dụng module trong thư mục slam để quét và xây dựng bản đồ
 
 Khởi động SLAM:
 
-```bash```
+```bash
 # Chạy file launch trong thư mục slam (thay tên file .py nếu khác)
 ros2 launch amr_slam agv_runall.py
 (Lệnh này sẽ khởi động Lidar và thuật toán SLAM Toolbox/Cartographer).
-
+```
+```bash
 ros2 run amr_slam wheel_vel_node
 (Lệnh này để chạy bàn phím điều khiển robot)
-
+```
 
 Lưu bản đồ (Sau khi quét xong):
 
-```bash```
+```bash
 ros2 run nav2_map_server map_saver_cli -f ~/amr_ws/src/mobile_robot_amr/navigation/maps/my_map
-
+```
 📍 Giai đoạn 2: Dẫn đường (Navigation)
 Sử dụng module trong thư mục navigation để robot tự chạy trên bản đồ đã lưu.
 
 Khởi động Navigation:
 
-```bash```
+```bash
 # Chạy file launch trong thư mục navigation (thay tên file .py nếu khác)
 ros2 launch amr_navigation bringup_localization.launch.py
 ros2 launch amr_navigation navigation_real_launch.py
 ros2 run amr_navigation wheel_vel_node_nav
 (Hệ thống sẽ tải bản đồ my_map và khởi động Nav2).
-
+```
 Điều khiển:
 
 Sử dụng công cụ 2D Pose Estimate trên Rviz để xác định vị trí ban đầu của robot.
@@ -87,14 +88,14 @@ Email: [trankhoavt85@gmail.com]
 
 VIDEO DEMO 1:
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=97mRKKiSMAY">
+  <a href="https://www.youtube.com/watch?v=YFsDgfYz9JY">
     <img src="http://img.youtube.com/vi/97mRKKiSMAY/0.jpg" width="500" alt="Demo Mobile Robot">
   </a>
 </div>
 
 VIDEO DEMO 2:
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=Di32CT20gGQ">
+  <a href="https://www.youtube.com/watch?v=3QMen4Jf0rc">
     <img src="http://img.youtube.com/vi/Di32CT20gGQ/0.jpg" width="500" alt="Demo 2 _ ROS 2-Based Autonomous Mobile Robots (AMRs)">
   </a>
 </div>
