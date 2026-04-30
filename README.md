@@ -1,101 +1,109 @@
 # Autonomous Mobile Robot (AMR) Project
 
-Dự án Robot tự hành (Differential Drive) sử dụng ROS 2 để định vị, tạo bản đồ (SLAM) và tự động tìm đường (Navigation).
+This project features a Differential Drive robot using ROS 2 for localization, mapping (SLAM), and autonomous path planning (Navigation).
 
 📍 **Repository:** [https://github.com/aykayy1/mobile_robot_amr](https://github.com/aykayy1/mobile_robot_amr)
 
-## 📂 Cấu trúc dự án
-Dự án được tổ chức thành các module chức năng chính:
-* `/slam`: Chứa các file cấu hình và launch file cho việc tạo bản đồ (Mapping).
-* `/navigation`: Chứa cấu hình Nav2 và launch file cho việc di chuyển tự động.
-* `/agv0509test6`: *(Thư mục kiểm thử nội bộ - Vui lòng bỏ qua)*.
+## 📂 Project Structure
+The project is organized into the following functional modules:
+* `/slam`: Contains configuration and launch files for Mapping (SLAM).
+* `/navigation`: Contains Nav2 configurations and launch files for autonomous navigation.
+* `/agv0509test6`: *(Internal testing directory - Please ignore)*.
 
-## 🛠️ Cài đặt (Installation)
+## 🛠️ Installation
 
-### 1. Yêu cầu hệ thống
+### 1. System Requirements
 * Ubuntu 22.04 LTS
 * ROS 2 Humble Hawksbill
 
-### 2. Tải và Build
-```bash```
-# 1. Tạo workspace
+### 2. Download and Build
+# 1. Create a workspace
+```bash
 mkdir -p ~/amr_ws/src
 cd ~/amr_ws/src
-
-# 2. Clone repo
+```
+# 2. Clone the repository
+```bash
 git clone [https://github.com/aykayy1/mobile_robot_amr.git](https://github.com/aykayy1/mobile_robot_amr.git)
-
-# 3. Cài đặt dependencies
+```
+# 3. Install dependencies
+```bash
 cd ~/amr_ws
 rosdep install --from-paths src --ignore-src -r -y
-
-# 4. Build package
+```
+# 4. Build the package
+```bash
 colcon build --symlink-install
 source install/setup.bash
-
-
-🚀 Hướng dẫn vận hành (Usage)
-Để vận hành robot, vui lòng mở các Terminal riêng biệt cho từng tác vụ dưới đây.
-
-📍 Giai đoạn 1: Tạo bản đồ (SLAM)
-Sử dụng module trong thư mục slam để quét và xây dựng bản đồ môi trường.
-
-Khởi động SLAM:
-
-```bash
-# Chạy file launch trong thư mục slam (thay tên file .py nếu khác)
-ros2 launch amr_slam agv_runall.py
-(Lệnh này sẽ khởi động Lidar và thuật toán SLAM Toolbox/Cartographer).
 ```
+
+🚀 Usage
+To operate the robot, please open separate terminals for each of the following tasks.
+
+📍 Phase 1: Mapping (SLAM)
+Use the modules in the slam directory to scan and build an environment map.
+
+Start SLAM:
+(This command initializes the Lidar and the SLAM Toolbox algorithm).
+```bash
+# Execute the launch file in the slam directory (change the .py filename if necessary)
+ros2 launch amr_slam agv_runall.py
+```
+(This command runs the keyboard node to control the robot manually).
 ```bash
 ros2 run amr_slam wheel_vel_node
-(Lệnh này để chạy bàn phím điều khiển robot)
 ```
-
-Lưu bản đồ (Sau khi quét xong):
-
+Save Map (After scanning is complete):
 ```bash
 ros2 run nav2_map_server map_saver_cli -f ~/amr_ws/src/mobile_robot_amr/navigation/maps/my_map
 ```
-📍 Giai đoạn 2: Dẫn đường (Navigation)
-Sử dụng module trong thư mục navigation để robot tự chạy trên bản đồ đã lưu.
 
-Khởi động Navigation:
+📍 Phase 2: Navigation
+Use the modules in the navigation directory to enable the robot to navigate autonomously on the saved map.
 
+Start Navigation:
+The system will load "my_map" and initialize Nav2.
 ```bash
-# Chạy file launch trong thư mục navigation (thay tên file .py nếu khác)
+# Execute the launch files in the navigation directory
 ros2 launch amr_navigation bringup_localization.launch.py
 ros2 launch amr_navigation navigation_real_launch.py
 ros2 run amr_navigation wheel_vel_node_nav
-(Hệ thống sẽ tải bản đồ my_map và khởi động Nav2).
 ```
-Điều khiển:
+Control:
 
-Sử dụng công cụ 2D Pose Estimate trên Rviz để xác định vị trí ban đầu của robot.
+Use the 2D Pose Estimate tool in RViz to set the robot's initial position.
 
-Sử dụng Nav2 Goal để chọn điểm đến.
+Use Nav2 Goal to select a destination.
 
-⚠️ Lưu ý (Note)
-Thư mục agv0509test6 chứa các file test cũ, không sử dụng cho quy trình vận hành chuẩn.
+⚠️ Notes
+This project focuses on the research and implementation of autonomous mobile robots (AMR) utilizing the ROS 2 framework.
 
-Đảm bảo bạn đã source install/setup.bash trong mọi terminal mới mở.
+The agv0509test6 directory contains legacy test files and is not part of the standard operating procedure.
 
-👥 Liên hệ
-Tác giả: [Trần Anh Khoa - Lê Đức Mạnh]
+Ensure you have run source install/setup.bash in every new terminal window.
 
-Email: [trankhoavt85@gmail.com]
-       [manh1472003@gmail.com]
+👥 Contact
+Authors: 
+Trần Anh Khoa - [trankhoavt85@gmail.com]
+Lê Đức Mạnh   - [manh1472003@gmail.com]
 
 VIDEO DEMO 1:
 <div align="center">
   <a href="https://www.youtube.com/watch?v=YFsDgfYz9JY">
-    <img src="http://img.youtube.com/vi/97mRKKiSMAY/0.jpg" width="500" alt="Demo Mobile Robot">
+    <img src="http://img.youtube.com/vi/YFsDgfYz9JY/0.jpg" width="500" alt="Demo 1 _ ROS 2-Based Autonomous Mobile Robots (AMRs)">
   </a>
 </div>
 
 VIDEO DEMO 2:
 <div align="center">
   <a href="https://www.youtube.com/watch?v=3QMen4Jf0rc">
-    <img src="http://img.youtube.com/vi/Di32CT20gGQ/0.jpg" width="500" alt="Demo 2 _ ROS 2-Based Autonomous Mobile Robots (AMRs)">
+    <img src="http://img.youtube.com/vi/3QMen4Jf0rc/0.jpg" width="500" alt="Demo 2 _ ROS 2-Based Autonomous Mobile Robots (AMRs)">
+  </a>
+</div>
+
+VIDEO PROJECT:
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=5v9YPMIHcok">
+    <img src="https://img.youtube.com/vi/5v9YPMIHcok/0.jpg" width="500" alt="Project Graduation _ ROS 2-Based Autonomous Mobile Robots (AMRs)">
   </a>
 </div>
